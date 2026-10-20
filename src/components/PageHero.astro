@@ -1,0 +1,128 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lead?: string;
+  image?: ImageMetadata;
+  imageAlt?: string;
+  crumbs?: { label: string; href: string }[];
+}
+
+const { eyebrow, title, lead, image, imageAlt = '', crumbs = [] } = Astro.props;
+---
+
+<section class:list={['page-hero', { 'page-hero--image': image }]}>
+  <div class="container inner">
+    <div class="copy">
+      {
+        crumbs.length > 0 && (
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <ol>
+              <li>
+                <a href="/">Home</a>
+              </li>
+              {crumbs.map((c) => (
+                <li>
+                  <a href={c.href}>{c.label}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )
+      }
+      {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+      <h1>{title}</h1>
+      {lead && <p class="lead">{lead}</p>}
+      <slot />
+    </div>
+    {
+      image && (
+        <div class="media">
+          <Image
+            src={image}
+            alt={imageAlt}
+            widths={[480, 800, 1200]}
+            sizes="(max-width: 1023px) 100vw, 520px"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    padding-block: clamp(40px, 6vw, 80px);
+    background:
+      radial-gradient(1000px 420px at 90% 0%, var(--green-50), transparent 70%),
+      var(--white);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .inner {
+    display: grid;
+    gap: clamp(32px, 5vw, 64px);
+    align-items: center;
+  }
+
+  .page-hero--image .inner {
+    grid-template-columns: 1.1fr 1fr;
+  }
+
+  .copy {
+    max-width: 760px;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 4.4vw, 3.4rem);
+  }
+
+  .lead {
+    margin-bottom: 24px;
+  }
+
+  .media img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0 0 20px;
+    padding: 0;
+    list-style: none;
+    font-size: 0.9rem;
+  }
+
+  .crumbs li + li::before {
+    content: '/';
+    margin-right: 6px;
+    color: var(--slate-500);
+  }
+
+  .crumbs a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: var(--brand-strong);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 1023px) {
+    .page-hero--image .inner {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

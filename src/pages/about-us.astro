@@ -1,0 +1,144 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import PersonCard from '../components/PersonCard.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../data/site';
+import { founders, advisers, staff } from '../data/team';
+import heroImage from '../assets/images/home/conference-2022.jpeg';
+---
+
+<Base
+  title="About Us"
+  description="HERI-Kenya was founded in 2021 by researchers from KEMRI, Stanford University and the Technical University of Mombasa to connect science, community action and policy in Diani."
+>
+  <PageHero
+    eyebrow="About HERI-Kenya"
+    title="Where science meets community action"
+    lead={`The Health + Environmental Research Institute – Kenya is a non-profit community benefit organisation founded in ${site.founded}. We bridge the gap between scientific research, grassroots action and policy-making to create practical, lasting solutions.`}
+    image={heroImage}
+    imageAlt="Participants and partners gather outside a HERI-Kenya event in 2022"
+    crumbs={[{ label: 'About', href: '/about-us/' }]}
+  />
+
+  <section class="section">
+    <div class="container mv">
+      <div class="mv-card">
+        <span class="eyebrow">Our mission</span>
+        <p class="statement">{site.mission}</p>
+      </div>
+      <div class="mv-card mv-card--dark">
+        <span class="eyebrow">Our vision</span>
+        <p class="statement">{site.vision}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Founders</span>
+        <h2>Started by scientists who live the problem</h2>
+        <p class="lead">
+          Our founders have spent decades studying how environment and health connect in Kenya — HERI turns that
+          knowledge into action with the communities affected.
+        </p>
+      </div>
+      <div class="founders">
+        {founders.map((p) => <PersonCard person={p} size="large" />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="eyebrow">Team &amp; staff</span>
+        <h2>The people doing the work</h2>
+      </div>
+      <div class="people">
+        {staff.map((p) => <PersonCard person={p} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="eyebrow">Governance</span>
+        <h2>Board of Advisers</h2>
+      </div>
+      <div class="people">
+        {advisers.map((p) => <PersonCard person={p} />)}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Join HERI"
+    text="Become a member, volunteer, ambassador, intern or partner — there is a place for you in our work."
+  />
+</Base>
+
+<style>
+  .mv {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .mv-card {
+    padding: clamp(28px, 4vw, 48px);
+    border-radius: var(--radius-lg);
+    background: var(--surface-soft);
+  }
+
+  .mv-card--dark {
+    background: var(--navy-900);
+    color: var(--white);
+  }
+
+  .mv-card--dark .eyebrow {
+    color: var(--green-500);
+  }
+
+  .statement {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: clamp(1.35rem, 2.6vw, 1.9rem);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .founders {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .people {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px 24px;
+  }
+
+  @media (max-width: 1023px) {
+    .founders {
+      grid-template-columns: 1fr;
+    }
+
+    .people {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .mv {
+      grid-template-columns: 1fr;
+    }
+
+    .people {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

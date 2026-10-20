@@ -8,7 +8,7 @@ import bsfImage from '../assets/images/bsf/bsf-tours-1.jpg';
 import learnImage from '../assets/images/home/training-workshop.jpg';
 import tourImage from '../assets/images/home/eco-tour-visitors.jpg';
 
-const featured = projects.filter((p) => p.featured);
+const featured = projects;
 
 const approach = [
   {
@@ -152,7 +152,7 @@ const approach = [
       <div class="projects">
         {
           featured.map((p, i) => (
-            <a class={`project ${i === 0 ? 'project--wide' : ''}`} href={`/projects/${p.slug}/`}>
+            <a class={`project ${i === 0 ? 'project--wide' : ''}`} href={p.href}>
               {p.image && (
                 <Image
                   src={p.image}
@@ -208,7 +208,7 @@ const approach = [
     <div class="container feature-grid feature-grid--reverse">
       <div>
         <span class="eyebrow">HERI Learning</span>
-        <h2 id="learn-title">Free courses for healthier homes and communities</h2>
+        <h2 id="learn-title">Online courses for healthier homes and communities</h2>
         <p class="lead">
           Practical online courses on waste management, environmental health and the circular economy — built from our
           research and field experience.

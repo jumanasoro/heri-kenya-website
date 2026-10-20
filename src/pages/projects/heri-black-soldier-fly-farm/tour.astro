@@ -1,0 +1,492 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../../layouts/Base.astro';
+import LifeCycle from '../../../components/LifeCycle.astro';
+import { tourStops } from '../../../data/bsf-tour';
+import { donateHref } from '../../../data/site';
+import heroImage from '../../../assets/images/bsf/bsf-tours-2.jpg';
+---
+
+<Base
+  title="Virtual Tour – Black Soldier Fly Farm"
+  description="Take a guided virtual tour of the HERI Black Soldier Fly Farm in Diani and see how organic waste becomes animal feed and organic fertiliser."
+>
+  <section class="intro">
+    <Image src={heroImage} alt="" widths={[800, 1400, 2000]} sizes="100vw" class="intro-bg" loading="eager" />
+    <div class="container intro-copy">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a href="/projects/">Our Work</a> / <a href="/projects/heri-black-soldier-fly-farm/">BSF Farm</a>
+      </nav>
+      <span class="eyebrow">Virtual tour · about 5 minutes</span>
+      <h1>From kitchen waste to feed and fertiliser</h1>
+      <p class="lead">
+        Walk through the HERI Black Soldier Fly Farm in Diani, stop by stop, and see how organic waste becomes something
+        valuable.
+      </p>
+      <a class="btn btn--primary" href={`#${tourStops[0].id}`}>Begin the tour ↓</a>
+    </div>
+  </section>
+
+  <div class="container tour">
+    <nav class="route" aria-label="Tour stops" data-route>
+      <p class="route-title">Your route</p>
+      <ol>
+        {
+          tourStops.map((stop, i) => (
+            <li>
+              <a href={`#${stop.id}`} data-route-link={stop.id}>
+                <span class="dot">{i === 0 ? '★' : i}</span>
+                <span class="route-label">{stop.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="progress" aria-hidden="true"><span data-progress></span></div>
+    </nav>
+
+    <div class="stops">
+      {
+        tourStops.map((stop, i) => {
+          const next = tourStops[i + 1];
+          return (
+            <section id={stop.id} class="stop" data-stop aria-labelledby={`${stop.id}-title`}>
+              <div class="stop-media">
+                {stop.lifecycle ? (
+                  <LifeCycle />
+                ) : (
+                  stop.image && (
+                    <Image
+                      src={stop.image}
+                      alt={stop.imageAlt ?? ''}
+                      widths={stop.imageSmall ? [320] : [480, 800, 1100]}
+                      sizes={stop.imageSmall ? '320px' : '(max-width: 1023px) 100vw, 640px'}
+                      class:list={{ small: stop.imageSmall }}
+                    />
+                  )
+                )}
+              </div>
+              <div class="stop-copy">
+                <h2 id={`${stop.id}-title`}>{stop.title}</h2>
+                {stop.paragraphs.map((p) => (
+                  <p>{p}</p>
+                ))}
+                <ul class="facts">
+                  {stop.facts.map((f) => (
+                    <li>{f}</li>
+                  ))}
+                </ul>
+                {next ? (
+                  <a class="btn btn--outline next" href={`#${next.id}`}>
+                    Next: {next.label} ↓
+                  </a>
+                ) : (
+                  <a class="btn btn--outline next" href="#tour-end">
+                    Finish the tour ↓
+                  </a>
+                )}
+              </div>
+            </section>
+          );
+        })
+      }
+    </div>
+  </div>
+
+  <section id="tour-end" class="section section--dark end">
+    <div class="container end-grid">
+      <div>
+        <span class="eyebrow">You’ve finished the tour</span>
+        <h2>Waste → feed, fertiliser, skills and healthier communities</h2>
+        <p class="lead">
+          Every visit and every gift helps us process more waste, train more people and bring this model to new towns.
+        </p>
+      </div>
+      <ul class="end-actions">
+        <li>
+          <a class="end-card" href="/learning-eco-tours/">
+            <strong>Visit in person</strong>
+            <span>Guided tours weekdays 9am–5pm and Saturdays 9am–2pm.</span>
+          </a>
+        </li>
+        <li>
+          <a class="end-card" href={donateHref}>
+            <strong>Help us scale</strong>
+            <span>Fund more processing capacity and community training.</span>
+          </a>
+        </li>
+        <li>
+          <a class="end-card" href="/partnerships-csr/">
+            <strong>Send us your waste</strong>
+            <span>Hotels and businesses: start an organic waste partnership.</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Highlight the current stop in the route and fill the progress bar as visitors scroll.
+  const stops = [...document.querySelectorAll<HTMLElement>('[data-stop]')];
+  const links = new Map(
+    [...document.querySelectorAll<HTMLAnchorElement>('[data-route-link]')].map((a) => [a.dataset.routeLink, a]),
+  );
+  const bar = document.querySelector<HTMLElement>('[data-progress]');
+
+  const setActive = (id: string) => {
+    links.forEach((a, key) => {
+      if (key === id) a.setAttribute('aria-current', 'step');
+      else a.removeAttribute('aria-current');
+    });
+    const index = stops.findIndex((s) => s.id === id);
+    if (bar) bar.style.width = `${((index + 1) / stops.length) * 100}%`;
+    // Keep the active stop visible in the horizontal strip on small screens, without moving the page.
+    const link = links.get(id);
+    const strip = link?.closest('ol');
+    if (link && strip && strip.scrollWidth > strip.clientWidth) {
+      strip.scrollTo({ left: link.offsetLeft - strip.clientWidth / 2 + link.offsetWidth / 2, behavior: 'smooth' });
+    }
+  };
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) setActive(entry.target.id);
+      });
+    },
+    { rootMargin: '-45% 0px -50% 0px' },
+  );
+  stops.forEach((s) => observer.observe(s));
+</script>
+
+<style>
+  .intro {
+    position: relative;
+    isolation: isolate;
+    padding-block: clamp(72px, 12vw, 150px);
+    color: var(--white);
+    overflow: hidden;
+  }
+
+  .intro-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+  }
+
+  .intro::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(95deg, rgb(15 23 42 / 0.9) 25%, rgb(15 23 42 / 0.35));
+  }
+
+  .intro-copy {
+    max-width: var(--container);
+  }
+
+  .intro-copy > * {
+    max-width: 640px;
+  }
+
+  .intro .lead {
+    color: rgb(255 255 255 / 0.85);
+    margin-bottom: 28px;
+  }
+
+  .crumbs {
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    color: rgb(255 255 255 / 0.6);
+  }
+
+  .crumbs a {
+    color: rgb(255 255 255 / 0.85);
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    text-decoration: underline;
+  }
+
+  .eyebrow {
+    color: var(--green-500);
+  }
+
+  /* Layout: route on the left, stops on the right */
+  .tour {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 64px);
+    padding-block: clamp(48px, 7vw, 88px);
+  }
+
+  .route {
+    position: sticky;
+    top: 100px;
+    align-self: start;
+  }
+
+  .route-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--slate-500);
+    margin-bottom: 12px;
+  }
+
+  .route ol {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 4px;
+  }
+
+  /* The dotted farm path joining the stops */
+  .route ol::before {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 18px;
+    bottom: 18px;
+    border-left: 2px dashed var(--green-100);
+  }
+
+  .route a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 8px 6px 0;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 999px;
+  }
+
+  .dot {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 2px solid var(--green-100);
+    color: var(--brand-strong);
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 0.9rem;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+  }
+
+  .route a:hover .dot {
+    border-color: var(--green-500);
+  }
+
+  .route a[aria-current='step'] {
+    color: var(--navy-900);
+  }
+
+  .route a[aria-current='step'] .dot {
+    background: var(--brand);
+    border-color: var(--brand);
+    color: var(--white);
+  }
+
+  .progress {
+    height: 6px;
+    margin-top: 20px;
+    border-radius: 999px;
+    background: var(--green-50);
+    overflow: hidden;
+  }
+
+  .progress span {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: var(--brand);
+    transition: width 0.3s;
+  }
+
+  /* Stops */
+  .stops {
+    display: grid;
+    gap: clamp(56px, 8vw, 104px);
+  }
+
+  .stop {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: clamp(24px, 4vw, 48px);
+    align-items: start;
+    scroll-margin-top: 96px;
+  }
+
+  .stop-media img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+
+  .stop-media img.small {
+    max-width: 320px;
+    margin-inline: auto;
+  }
+
+  .stop:has(.cycle) {
+    grid-template-columns: 1fr;
+  }
+
+  .stop h2 {
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  }
+
+  .facts {
+    margin: 20px 0 24px;
+    padding: 16px 20px;
+    list-style: none;
+    display: grid;
+    gap: 8px;
+    border-radius: var(--radius);
+    background: var(--surface-soft);
+    font-size: 0.95rem;
+  }
+
+  .facts li {
+    position: relative;
+    padding-left: 22px;
+  }
+
+  .facts li::before {
+    content: '●';
+    position: absolute;
+    left: 0;
+    color: var(--brand);
+    font-size: 0.7rem;
+    top: 0.3em;
+  }
+
+  .next {
+    min-height: 44px;
+    font-size: 0.95rem;
+  }
+
+  /* End */
+  .end-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 5vw, 64px);
+    align-items: center;
+  }
+
+  .end-actions {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 12px;
+  }
+
+  .end-card {
+    display: grid;
+    gap: 2px;
+    padding: 20px 24px;
+    border-radius: var(--radius);
+    background: rgb(255 255 255 / 0.06);
+    border: 1px solid rgb(255 255 255 / 0.14);
+    color: var(--white);
+    text-decoration: none;
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+
+  .end-card:hover {
+    background: rgb(255 255 255 / 0.12);
+    border-color: var(--green-500);
+  }
+
+  .end-card strong {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+  }
+
+  .end-card span {
+    color: rgb(255 255 255 / 0.75);
+  }
+
+  @media (max-width: 1023px) {
+    /* minmax(0, 1fr) stops the wide, scrollable stop strip from stretching the page. */
+    .tour {
+      grid-template-columns: minmax(0, 1fr);
+      padding-top: 0;
+    }
+
+    /* On small screens the route becomes a horizontal strip under the header */
+    .route {
+      top: 68px;
+      z-index: 5;
+      margin-inline: calc(-1 * var(--gutter));
+      padding: 10px var(--gutter);
+      background: rgb(255 255 255 / 0.96);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .route-title {
+      display: none;
+    }
+
+    .route ol {
+      grid-auto-flow: column;
+      grid-auto-columns: max-content;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .route ol::before {
+      display: none;
+    }
+
+    .route a {
+      padding: 4px 14px 4px 4px;
+      background: var(--green-50);
+      font-size: 0.9rem;
+    }
+
+    .dot {
+      width: 30px;
+      height: 30px;
+      font-size: 0.8rem;
+    }
+
+    .progress {
+      margin-top: 10px;
+      height: 4px;
+    }
+
+    .stops {
+      padding-top: 32px;
+    }
+
+    .stop {
+      grid-template-columns: minmax(0, 1fr);
+      scroll-margin-top: 150px;
+    }
+
+    .end-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

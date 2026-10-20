@@ -1,0 +1,271 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { donateHref } from '../../data/site';
+
+export const getStaticPaths = (async () => {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({ params: { slug: project.id }, props: { project } }));
+}) satisfies GetStaticPaths;
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const { title, summary, cover, coverAlt, highlights, getInvolved, category, status } = project.data;
+
+const isBsf = project.id === 'heri-black-soldier-fly-farm';
+
+const others = (await getCollection('projects'))
+  .filter((p) => p.id !== project.id && p.data.status === 'active')
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+---
+
+<Base title={title} description={summary}>
+  <PageHero
+    eyebrow={status === 'completed' ? `${category} · Completed` : category}
+    title={title}
+    lead={summary}
+    image={cover}
+    imageAlt={coverAlt}
+    crumbs={[{ label: 'Our Work', href: '/projects/' }, { label: title, href: `/projects/${project.id}/` }]}
+  >
+    {
+      isBsf && (
+        <div class="btn-row">
+          <a class="btn btn--primary" href={`/projects/${project.id}/tour/`}>
+            Take the virtual tour
+          </a>
+          <a class="btn btn--outline" href="/learning-eco-tours/">
+            Book a visit
+          </a>
+        </div>
+      )
+    }
+  </PageHero>
+
+  {
+    highlights && highlights.length > 0 && (
+      <section class="highlights" aria-label="Highlights">
+        <div class="container">
+          <ul class:list={['hl', `hl--${highlights.length}`]}>
+            {highlights.map((h) => (
+              <li>
+                <h2>{h.title}</h2>
+                <p>{h.text}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section">
+    <div class="container layout">
+      <article class="prose">
+        <Content />
+      </article>
+
+      {
+        getInvolved && getInvolved.length > 0 && (
+          <aside class="involve" aria-labelledby="involve-title">
+            <h2 id="involve-title">Get involved</h2>
+            <ul>
+              {getInvolved.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+            <div class="involve-actions">
+              <a class="btn btn--primary" href="/contact-us/">
+                Talk to us
+              </a>
+              <a class="btn btn--outline" href={donateHref}>
+                Donate
+              </a>
+            </div>
+          </aside>
+        )
+      }
+    </div>
+  </section>
+
+  {
+    isBsf && (
+      <section class="section section--dark">
+        <div class="container tour-teaser">
+          <div>
+            <span class="eyebrow">Virtual tour</span>
+            <h2>Can’t visit Diani? Walk through the farm online.</h2>
+            <p class="lead">
+              Follow organic waste from the hotel kitchen to protein feed and compost, stop by stop.
+            </p>
+          </div>
+          <a class="btn btn--primary" href={`/projects/${project.id}/tour/`}>
+            Start the virtual tour
+          </a>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="more-head">
+        <h2>More of our work</h2>
+        <a class="link-arrow" href="/projects/">All projects</a>
+      </div>
+      <ul class="more">
+        {
+          others.map((p) => (
+            <li>
+              <ProjectCard
+                title={p.data.title}
+                summary={p.data.summary}
+                href={`/projects/${p.id}/`}
+                image={p.data.cover}
+                tag={p.data.category}
+              />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .highlights {
+    background: var(--brand);
+    color: var(--white);
+    padding-block: 40px;
+  }
+
+  .hl {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .hl--2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hl h2 {
+    font-size: 1.15rem;
+    margin-bottom: 6px;
+  }
+
+  .hl p {
+    margin: 0;
+    color: rgb(255 255 255 / 0.88);
+    font-size: 0.975rem;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: clamp(32px, 6vw, 80px);
+    align-items: start;
+  }
+
+  .involve {
+    position: sticky;
+    top: 100px;
+    padding: 28px;
+    border-radius: var(--radius);
+    background: var(--surface-soft);
+  }
+
+  .involve h2 {
+    font-size: 1.35rem;
+  }
+
+  .involve ul {
+    margin: 0 0 24px;
+    padding-left: 1.2em;
+  }
+
+  .involve li {
+    margin-bottom: 8px;
+  }
+
+  .involve li::marker {
+    color: var(--brand);
+  }
+
+  .involve-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .tour-teaser {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .tour-teaser .lead {
+    margin: 0;
+  }
+
+  .more-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .more-head h2 {
+    margin: 0;
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  }
+
+  .more {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 1023px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+
+    .involve {
+      position: static;
+    }
+
+    .more {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .hl,
+    .hl--2 {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .more {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

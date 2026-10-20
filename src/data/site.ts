@@ -90,7 +90,7 @@ export const audiences: Audience[] = [
     title: 'For communities',
     intro: 'Practical skills for healthier homes and a cleaner Diani.',
     points: [
-      'Free online courses and certificates',
+      'Online courses with certificates',
       'Community forums and school eco-clubs',
       'Visit the BSF farm and learning centre',
     ],
@@ -98,78 +98,56 @@ export const audiences: Audience[] = [
   },
 ];
 
+// Homepage project highlights. Full project pages live in src/content/projects/.
 export type Project = {
   title: string;
-  slug: string;
+  href: string;
   summary: string;
   image?: ImageMetadata;
-  featured?: boolean;
 };
 
 export const projects: Project[] = [
   {
     title: 'Black Soldier Fly Farm',
-    slug: 'heri-black-soldier-fly-farm',
+    href: '/projects/heri-black-soldier-fly-farm/',
     summary:
       'Turning organic waste from an environmental health risk into compost and protein-rich animal feed — a live demonstration and training site in Diani.',
     image: bsfTours,
-    featured: true,
   },
   {
     title: 'Research',
-    slug: 'research',
+    href: '/research/',
     summary:
       'Assessments, surveys and applied studies that make every intervention relevant, ethical and effective.',
     image: research,
-    featured: true,
   },
   {
     title: 'Community Education Forums',
-    slug: 'heri-community-forums',
+    href: '/projects/heri-community-forums/',
     summary:
       'Spaces for dialogue and action where community experience shapes shared solutions to health and environmental issues.',
     image: communityForum,
-    featured: true,
   },
   {
     title: 'School Eco-Clubs',
-    slug: 'heri-school-eco-clubs',
+    href: '/projects/heri-school-eco-clubs/',
     summary:
       'Students turning environmental knowledge into everyday action through tree planting, waste management and climate education.',
     image: treePlanting,
-    featured: true,
   },
   {
     title: 'Diani Sustainability Collective',
-    slug: 'diani-sustainability-collective',
+    href: '/projects/diani-sustainability-collective/',
     summary:
       'Hotels, businesses, conservation groups and communities aligning on shared local challenges for greater impact.',
     image: hotelPartners,
-    featured: true,
   },
   {
     title: 'Sustainability Champions & Ambassadors',
-    slug: 'heri-sustainability-champions-ambassadors',
+    href: '/projects/heri-sustainability-champions-ambassadors/',
     summary:
       'A global network raising awareness, influencing policy and mobilising resources for HERI’s mission.',
     image: ecoTourVisitors,
-    featured: true,
-  },
-  {
-    title: 'Gender Leadership for Our World (GLOW)',
-    slug: 'gender-leadership-for-our-world-glow',
-    summary:
-      'Mentorship and opportunities for women leaders driving change in health and environment across Kenya.',
-  },
-  {
-    title: 'HERI Eco-Action',
-    slug: 'heri-eco-action',
-    summary: 'Tree planting and coastal clean-ups that restore habitats and unite people in collective climate action.',
-  },
-  {
-    title: 'Sea Change – Plastic Planet',
-    slug: 'heri-hub-capacity-building',
-    summary: 'Tackling plastic pollution on the Kenyan coast through education, clean-ups and better waste systems.',
   },
 ];
 

@@ -1,0 +1,104 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import researchImage from '../../assets/images/home/research.png';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const active = projects.filter((p) => p.data.status === 'active');
+const completed = projects.filter((p) => p.data.status === 'completed');
+---
+
+<Base
+  title="Our Work"
+  description="HERI-Kenya’s projects in Diani: the Black Soldier Fly Farm, school eco-clubs, community forums, the Diani Sustainability Collective and more."
+>
+  <PageHero
+    eyebrow="Our work"
+    title="Research-led projects, rooted in community"
+    lead="Every HERI project starts with evidence and is shaped with the people it serves — from turning waste into feed and fertiliser to training the next generation of environmental leaders."
+    crumbs={[{ label: 'Our Work', href: '/projects/' }]}
+  />
+
+  <section class="section">
+    <div class="container">
+      <ul class="grid">
+        {
+          active.map((p) => (
+            <li>
+              <ProjectCard
+                title={p.data.title}
+                summary={p.data.summary}
+                href={`/projects/${p.id}/`}
+                image={p.data.cover}
+                tag={p.data.category}
+              />
+            </li>
+          ))
+        }
+        <li>
+          <ProjectCard
+            title="Research"
+            summary="Assessments, surveys and applied studies that make every intervention relevant, ethical and effective."
+            href="/research/"
+            image={researchImage}
+            tag="Research"
+          />
+        </li>
+      </ul>
+
+      {
+        completed.length > 0 && (
+          <>
+            <h2 class="sub">Past projects</h2>
+            <ul class="grid">
+              {completed.map((p) => (
+                <li>
+                  <ProjectCard
+                    title={p.data.title}
+                    summary={p.data.summary}
+                    href={`/projects/${p.id}/`}
+                    image={p.data.cover}
+                    tag={p.data.category}
+                  />
+                </li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sub {
+    margin-top: clamp(48px, 7vw, 80px);
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  }
+
+  @media (max-width: 1023px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

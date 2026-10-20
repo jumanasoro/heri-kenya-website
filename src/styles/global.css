@@ -259,6 +259,42 @@ a {
   transform: translateX(4px);
 }
 
+/* Long-form text from Markdown content */
+.prose {
+  max-width: 70ch;
+}
+
+.prose h2 {
+  font-size: clamp(1.4rem, 2.4vw, 1.85rem);
+  margin-top: 2em;
+}
+
+.prose h2:first-child {
+  margin-top: 0;
+}
+
+.prose h3 {
+  margin-top: 1.6em;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.3em;
+  margin: 0 0 1.2em;
+}
+
+.prose li {
+  margin-bottom: 0.4em;
+}
+
+.prose li::marker {
+  color: var(--brand);
+}
+
+.prose strong {
+  color: var(--navy-900);
+}
+
 .visually-hidden {
   position: absolute !important;
   width: 1px;
