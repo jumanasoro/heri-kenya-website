@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "wordpress-heri-kenya": {
+      "type": "stdio",
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@automattic/mcp-wordpress-remote@latest"],
+      "env": {
+        "WP_API_URL": "https://heri-kenya.org/wp-json/mcp/mcp-adapter-default-server",
+        "WP_API_USERNAME": "${WP_API_USERNAME}",
+        "WP_API_PASSWORD": "${WP_API_PASSWORD}",
+        "OAUTH_ENABLED": "false"
+      }
+    }
+  }
+}

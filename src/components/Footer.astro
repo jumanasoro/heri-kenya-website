@@ -1,0 +1,118 @@
+---
+import { nav, donateHref, site, contact } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container grid">
+    <div class="about">
+      <p class="name">{site.name}</p>
+      <p class="full">{site.fullName}</p>
+      <p class="mission">{site.mission}</p>
+      <a class="btn btn--primary" href={donateHref}>Donate</a>
+    </div>
+
+    <nav aria-label="Footer">
+      <p class="heading">Explore</p>
+      <ul>
+        {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        <li><a href="/partnerships-csr/">CSR &amp; Partnerships</a></li>
+        <li><a href="/learning-eco-tours/">Eco-Tours</a></li>
+        <li><a href="/media/">Media &amp; Resources</a></li>
+      </ul>
+    </nav>
+
+    <div>
+      <p class="heading">Contact</p>
+      <ul>
+        <li><a href={`mailto:${contact.email}`}>{contact.email}</a></li>
+        <li><a href={`tel:${contact.phone.replace(/\s/g, '')}`}>{contact.phone}</a></li>
+        <li>{contact.address}</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container legal">
+    <p>© {year} {site.fullName}. A non-profit community benefit organisation founded in {site.founded}.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--navy-900);
+    color: rgb(255 255 255 / 0.78);
+    padding-top: clamp(56px, 8vw, 88px);
+    font-size: 0.975rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 40px;
+  }
+
+  .name {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--white);
+    margin: 0;
+  }
+
+  .full {
+    color: var(--green-500);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .mission {
+    max-width: 38ch;
+    margin-bottom: 24px;
+  }
+
+  .heading {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+
+  a:not(.btn) {
+    color: rgb(255 255 255 / 0.78);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+
+  a:not(.btn):hover {
+    color: var(--white);
+    text-decoration: underline;
+  }
+
+  .legal {
+    margin-top: 56px;
+    padding-block: 24px;
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+    font-size: 0.875rem;
+    color: rgb(255 255 255 / 0.55);
+  }
+
+  .legal p {
+    margin: 0;
+  }
+
+  @media (max-width: 767px) {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+</style>

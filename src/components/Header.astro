@@ -1,0 +1,234 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/images/heri-logo.png';
+import { nav, donateHref, site } from '../data/site';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<header class="site-header" data-header>
+  <div class="container bar">
+    <a class="brand" href="/" aria-label={`${site.name} home`}>
+      <Image src={logo} alt="" width={116} height={80} loading="eager" />
+    </a>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle>
+      <span class="menu-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Menu</span>
+    </button>
+
+    <nav id="site-nav" class="nav" aria-label="Main" data-nav>
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a class="btn btn--primary donate" href={donateHref}>Donate</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') !== 'true';
+    toggle.setAttribute('aria-expanded', String(open));
+    header?.classList.toggle('is-open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+
+  const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid transparent;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+  }
+
+  /* The blur lives on a pseudo-element: backdrop-filter on the header itself would
+     trap the fixed-position mobile menu inside the header's 68px height. */
+  .site-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: rgb(255 255 255 / 0.92);
+    backdrop-filter: saturate(160%) blur(12px);
+  }
+
+  .site-header:global(.is-scrolled) {
+    border-color: var(--border);
+    box-shadow: 0 4px 20px rgb(15 23 42 / 0.06);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 76px;
+  }
+
+  .brand img {
+    width: 76px;
+    height: auto;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .nav ul {
+    display: flex;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nav ul a {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.975rem;
+    color: var(--navy-900);
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  .nav ul a:hover {
+    background: var(--green-50);
+    color: var(--brand-strong);
+  }
+
+  .nav ul a[aria-current='page'] {
+    color: var(--brand-strong);
+    background: var(--green-50);
+  }
+
+  .donate {
+    min-height: 44px;
+    padding-inline: 1.4rem;
+  }
+
+  .menu-toggle {
+    display: none;
+    width: 48px;
+    height: 48px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--green-50);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .menu-icon,
+  .menu-icon::before,
+  .menu-icon::after {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--navy-900);
+    transition: transform 0.25s, opacity 0.2s;
+  }
+
+  .menu-icon {
+    position: relative;
+  }
+
+  .menu-icon::before,
+  .menu-icon::after {
+    content: '';
+    position: absolute;
+    left: 0;
+  }
+
+  .menu-icon::before {
+    top: -7px;
+  }
+
+  .menu-icon::after {
+    top: 7px;
+  }
+
+  @media (max-width: 1023px) {
+    .menu-toggle {
+      display: inline-flex;
+    }
+
+    .brand img {
+      width: 64px;
+    }
+
+    .bar {
+      min-height: 68px;
+    }
+
+    .nav {
+      position: fixed;
+      inset: 68px 0 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 24px;
+      padding: 24px var(--gutter) 40px;
+      background: var(--white);
+      overflow-y: auto;
+      visibility: hidden;
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: opacity 0.2s, transform 0.2s, visibility 0.2s;
+    }
+
+    .site-header:global(.is-open) .nav {
+      visibility: visible;
+      opacity: 1;
+      transform: none;
+    }
+
+    .nav ul {
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .nav ul a {
+      padding: 14px 12px;
+      font-size: 1.15rem;
+      border-radius: 12px;
+    }
+
+    .site-header:global(.is-open) .menu-icon {
+      background: transparent;
+    }
+
+    .site-header:global(.is-open) .menu-icon::before {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .site-header:global(.is-open) .menu-icon::after {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+  }
+</style>

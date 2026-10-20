@@ -1,0 +1,870 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { site, stats, audiences, projects, testimonials, partners, donateHref } from '../data/site';
+
+import heroImage from '../assets/images/home/community-forum.jpg';
+import bsfImage from '../assets/images/bsf/bsf-tours-1.jpg';
+import learnImage from '../assets/images/home/training-workshop.jpg';
+import tourImage from '../assets/images/home/eco-tour-visitors.jpg';
+
+const featured = projects.filter((p) => p.featured);
+
+const approach = [
+  {
+    step: '01',
+    title: 'Research',
+    text: 'Assessments, surveys and applied studies make sure every intervention is relevant, ethical and effective.',
+  },
+  {
+    step: '02',
+    title: 'Community action',
+    text: 'We turn evidence into targeted projects on waste, environmental health and community capacity — with communities, not for them.',
+  },
+  {
+    step: '03',
+    title: 'Measurable impact',
+    text: 'We track outcomes, learn continuously and adapt, so partners and donors can see exactly what changed.',
+  },
+];
+---
+
+<Base>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Health + Environmental Research Institute – Kenya</span>
+        <h1>Healthier communities. <span class="accent">Resilient coasts.</span></h1>
+        <p class="lead">
+          From Diani, we bridge scientific research, grassroots action and policy — turning waste into opportunity
+          and knowledge into lasting change.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href={donateHref}>Support our work</a>
+          <a class="btn btn--outline" href="/projects/">See what we do</a>
+        </div>
+      </div>
+
+      <div class="hero-media">
+        <Image
+          src={heroImage}
+          alt="A HERI facilitator leads a community education forum under a large shade tree in Diani"
+          widths={[480, 720, 1100]}
+          sizes="(max-width: 1023px) 100vw, 560px"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <div class="hero-badge">
+          <strong>HERI@5</strong>
+          <span>Five years of science-driven community impact</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Impact strip -->
+  <section class="impact" aria-labelledby="impact-title">
+    <div class="container">
+      <h2 id="impact-title" class="visually-hidden">Our impact in numbers</h2>
+      <ul class="stats">
+        {
+          stats.slice(0, 4).map((s) => (
+            <li>
+              <strong>{s.value}</strong>
+              <span>{s.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Audience paths -->
+  <section class="section" aria-labelledby="paths-title">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="eyebrow">Find your place</span>
+        <h2 id="paths-title">However you connect with HERI, there’s a way in</h2>
+        <p class="lead">
+          We work alongside the people of Diani, the businesses that depend on its environment, and supporters around
+          the world.
+        </p>
+      </div>
+
+      <div class="paths">
+        {
+          audiences.map((a) => (
+            <article class={`path path--${a.key}`}>
+              <h3>{a.title}</h3>
+              <p class="path-intro">{a.intro}</p>
+              <ul>
+                {a.points.map((pt) => (
+                  <li>{pt}</li>
+                ))}
+              </ul>
+              <a class="link-arrow" href={a.cta.href}>
+                {a.cta.label}
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Approach -->
+  <section class="section section--soft" aria-labelledby="approach-title">
+    <div class="container approach">
+      <div class="section-head">
+        <span class="eyebrow">How we work</span>
+        <h2 id="approach-title">Evidence first. Community always.</h2>
+        <p class="lead">
+          Founded in {site.founded} by researchers from KEMRI, Stanford University and the Technical University of
+          Mombasa, HERI puts science to work where it matters most.
+        </p>
+      </div>
+      <ol class="steps">
+        {
+          approach.map((a) => (
+            <li>
+              <span class="step-num">{a.step}</span>
+              <h3>{a.title}</h3>
+              <p>{a.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Flagship projects -->
+  <section class="section" aria-labelledby="projects-title">
+    <div class="container">
+      <div class="section-head split-head">
+        <div>
+          <span class="eyebrow">Our flagship work</span>
+          <h2 id="projects-title">Projects that change daily life</h2>
+        </div>
+        <a class="link-arrow" href="/projects/">All projects</a>
+      </div>
+
+      <div class="projects">
+        {
+          featured.map((p, i) => (
+            <a class={`project ${i === 0 ? 'project--wide' : ''}`} href={`/projects/${p.slug}/`}>
+              {p.image && (
+                <Image
+                  src={p.image}
+                  alt=""
+                  widths={[400, 700, 1000]}
+                  sizes={i === 0 ? '(max-width: 767px) 100vw, 66vw' : '(max-width: 767px) 100vw, 33vw'}
+                />
+              )}
+              <div class="project-body">
+                <h3>{p.title}</h3>
+                <p>{p.summary}</p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- BSF virtual tour feature -->
+  <section class="section section--dark feature" aria-labelledby="bsf-title">
+    <div class="container feature-grid">
+      <div class="feature-media">
+        <Image
+          src={bsfImage}
+          alt="Visitors inspect trays of Black Soldier Fly larvae and compost at the HERI BSF Farm"
+          widths={[480, 800, 1200]}
+          sizes="(max-width: 1023px) 100vw, 50vw"
+        />
+      </div>
+      <div>
+        <span class="eyebrow">Virtual tour</span>
+        <h2 id="bsf-title">Walk through the Black Soldier Fly Farm</h2>
+        <p class="lead">
+          See how sorted organic waste from Diani’s hotels and homes becomes protein-rich animal feed and organic
+          compost — in days, with low emissions.
+        </p>
+        <ul class="checks">
+          <li>Treats waste at source, cutting pollution and disease risk</li>
+          <li>Produces compost (frass) and high-protein insect feed</li>
+          <li>A replicable model for hospitality towns and cities</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="/projects/heri-black-soldier-fly-farm/tour/">Start the virtual tour</a>
+          <a class="btn btn--ghost-light" href="/learning-eco-tours/">Book a real visit</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Learning platform -->
+  <section class="section" aria-labelledby="learn-title">
+    <div class="container feature-grid feature-grid--reverse">
+      <div>
+        <span class="eyebrow">HERI Learning</span>
+        <h2 id="learn-title">Free courses for healthier homes and communities</h2>
+        <p class="lead">
+          Practical online courses on waste management, environmental health and the circular economy — built from our
+          research and field experience.
+        </p>
+        <ul class="checks checks--dark">
+          <li>Learn at your own pace, on your phone</li>
+          <li>Quizzes to check your understanding</li>
+          <li>Earn a HERI certificate when you finish</li>
+        </ul>
+        <a class="btn btn--primary" href="/learn/">Explore courses</a>
+      </div>
+      <div class="feature-media">
+        <Image
+          src={learnImage}
+          alt="Community members take part in a HERI training workshop"
+          widths={[480, 800, 1200]}
+          sizes="(max-width: 1023px) 100vw, 50vw"
+          class="learn-img"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Full impact numbers -->
+  <section class="section section--soft" aria-labelledby="numbers-title">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="eyebrow">Impact snapshot</span>
+        <h2 id="numbers-title">Five years, in numbers</h2>
+      </div>
+      <ul class="numbers">
+        {
+          stats.map((s) => (
+            <li>
+              <strong>{s.value}</strong>
+              <span>{s.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section" aria-labelledby="voices-title">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="eyebrow">Voices from the community</span>
+        <h2 id="voices-title">What our partners and neighbours say</h2>
+      </div>
+      <div class="quotes">
+        {
+          testimonials.map((t) => (
+            <figure class="quote">
+              <blockquote>
+                <p>“{t.quote}”</p>
+              </blockquote>
+              <figcaption>
+                <strong>{t.name}</strong>
+                <span>{t.role}</span>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Partners -->
+  <section class="partners-band" aria-labelledby="partners-title">
+    <div class="container">
+      <h2 id="partners-title" class="partners-title">Working with</h2>
+      <ul class="logos">
+        {
+          partners.map((p) => (
+            <li>
+              <Image src={p.logo} alt={p.name} height={64} widths={[160, 320]} sizes="160px" />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Final call to action -->
+  <section class="section cta" aria-labelledby="cta-title">
+    <div class="container cta-card">
+      <Image src={tourImage} alt="" widths={[600, 1000, 1600]} sizes="100vw" class="cta-bg" />
+      <div class="cta-content">
+        <h2 id="cta-title">Help us scale what works</h2>
+        <p class="lead">
+          As we celebrate HERI@5, we are mobilising support to grow our waste management work, community reach and
+          impact on environmental health.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href={donateHref}>Donate</a>
+          <a class="btn btn--ghost-light" href="/partnerships-csr/">Become a partner</a>
+          <a class="btn btn--ghost-light" href="/learning-eco-tours/">Visit us in Diani</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Hero */
+  .hero {
+    padding-block: clamp(40px, 6vw, 88px) clamp(48px, 7vw, 96px);
+    background:
+      radial-gradient(1200px 500px at 85% 0%, var(--green-50), transparent 70%),
+      var(--white);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    align-items: center;
+    gap: clamp(32px, 5vw, 72px);
+  }
+
+  .accent {
+    color: var(--brand);
+  }
+
+  .hero-copy .lead {
+    margin-bottom: 32px;
+  }
+
+  .hero-media {
+    position: relative;
+  }
+
+  .hero-media img {
+    width: 100%;
+    aspect-ratio: 4 / 3.6;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .hero-badge {
+    position: absolute;
+    left: -24px;
+    bottom: 28px;
+    display: grid;
+    gap: 2px;
+    max-width: 240px;
+    padding: 16px 20px;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border-left: 5px solid var(--red-600);
+  }
+
+  .hero-badge strong {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    color: var(--navy-900);
+  }
+
+  .hero-badge span {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--text-muted);
+  }
+
+  /* Impact strip */
+  .impact {
+    background: var(--brand);
+    color: var(--white);
+    padding-block: 32px;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .stats li,
+  .numbers li {
+    display: grid;
+    gap: 4px;
+  }
+
+  .stats strong {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .stats span {
+    font-size: 0.95rem;
+    color: rgb(255 255 255 / 0.88);
+  }
+
+  /* Audience paths */
+  .paths {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .path {
+    display: flex;
+    flex-direction: column;
+    padding: 32px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--white);
+    border-top: 6px solid var(--brand);
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+
+  .path:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+  }
+
+  .path--partners {
+    border-top-color: var(--navy-900);
+  }
+
+  .path--communities {
+    border-top-color: var(--sun-400);
+  }
+
+  .path-intro {
+    color: var(--text-muted);
+  }
+
+  .path ul {
+    margin: 0 0 24px;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .path li {
+    position: relative;
+    padding-left: 28px;
+  }
+
+  .path li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--green-100)
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' fill='none' stroke='%23379237' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      center / 12px no-repeat;
+  }
+
+  /* Approach */
+  .approach {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: clamp(32px, 6vw, 80px);
+    align-items: start;
+  }
+
+  .approach .section-head {
+    margin-bottom: 0;
+  }
+
+  .steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 16px;
+  }
+
+  .steps li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 20px;
+    padding: 24px;
+    background: var(--white);
+    border-radius: var(--radius);
+  }
+
+  .step-num {
+    grid-row: span 2;
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--brand);
+  }
+
+  .steps h3 {
+    margin-bottom: 4px;
+  }
+
+  .steps p {
+    margin: 0;
+    color: var(--text-muted);
+  }
+
+  /* Projects */
+  .split-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    max-width: none;
+    flex-wrap: wrap;
+  }
+
+  .split-head h2 {
+    margin-bottom: 0;
+  }
+
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .project {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--white);
+    border: 1px solid var(--border);
+    color: inherit;
+    text-decoration: none;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+
+  .project:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+  }
+
+  .project img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+  }
+
+  .project--wide {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .project--wide img {
+    aspect-ratio: auto;
+    flex: 1;
+    min-height: 280px;
+  }
+
+  .project-body {
+    padding: 20px 24px 24px;
+  }
+
+  .project-body h3 {
+    margin-bottom: 6px;
+  }
+
+  .project-body p {
+    margin: 0;
+    font-size: 0.975rem;
+    color: var(--text-muted);
+  }
+
+  /* Feature blocks */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: clamp(32px, 6vw, 80px);
+  }
+
+  .feature-media img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+  }
+
+  /* Wider crop from the top hides the phone watermark in the photo's bottom corner. */
+  .feature-media .learn-img {
+    aspect-ratio: 16 / 10;
+    object-position: top;
+  }
+
+  .feature .lead {
+    margin-bottom: 24px;
+  }
+
+  .checks {
+    margin: 0 0 32px;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 12px;
+  }
+
+  .checks li {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .checks li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 1px;
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--brand);
+    color: var(--white);
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .checks--dark li {
+    color: var(--text);
+  }
+
+  /* Numbers */
+  .numbers {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .numbers li {
+    padding: 28px 24px;
+    background: var(--white);
+    border-radius: var(--radius);
+    text-align: center;
+  }
+
+  .numbers strong {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 3.4vw, 2.75rem);
+    font-weight: 800;
+    color: var(--brand-strong);
+    line-height: 1.1;
+  }
+
+  .numbers span {
+    color: var(--text-muted);
+  }
+
+  /* Testimonials */
+  .quotes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .quote {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 32px;
+    border-radius: var(--radius);
+    background: var(--surface-soft);
+  }
+
+  .quote blockquote {
+    margin: 0 0 24px;
+  }
+
+  .quote p {
+    margin: 0;
+    font-size: 1.05rem;
+  }
+
+  .quote figcaption {
+    display: grid;
+  }
+
+  .quote figcaption span {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  /* Partners */
+  .partners-band {
+    padding-block: 48px;
+    border-block: 1px solid var(--border);
+  }
+
+  .partners-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--slate-500);
+    margin-bottom: 28px;
+  }
+
+  .logos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 24px 48px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .logos img {
+    height: 56px;
+    width: auto;
+    max-width: 150px;
+    object-fit: contain;
+    filter: grayscale(1);
+    opacity: 0.75;
+    transition: filter 0.2s, opacity 0.2s;
+  }
+
+  .logos img:hover {
+    filter: none;
+    opacity: 1;
+  }
+
+  /* Final CTA */
+  .cta-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    padding: clamp(40px, 7vw, 88px) clamp(24px, 6vw, 72px);
+    color: var(--white);
+    isolation: isolate;
+  }
+
+  .cta-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+  }
+
+  .cta-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(100deg, rgb(15 23 42 / 0.92) 30%, rgb(27 84 32 / 0.65));
+  }
+
+  .cta-content {
+    max-width: 620px;
+  }
+
+  .cta-content .lead {
+    color: rgb(255 255 255 / 0.85);
+    margin-bottom: 28px;
+  }
+
+  /* Responsive */
+  @media (max-width: 1023px) {
+    .hero-grid,
+    .feature-grid,
+    .approach {
+      grid-template-columns: 1fr;
+    }
+
+    .feature-grid--reverse > :first-child {
+      order: 2;
+    }
+
+    .hero-badge {
+      left: 16px;
+      bottom: 16px;
+    }
+
+    .paths,
+    .quotes {
+      grid-template-columns: 1fr;
+    }
+
+    .projects {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .numbers {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .projects {
+      grid-template-columns: 1fr;
+    }
+
+    .project--wide {
+      grid-column: auto;
+      grid-row: auto;
+    }
+
+    .project--wide img {
+      aspect-ratio: 16 / 10;
+      min-height: 0;
+    }
+
+    .path,
+    .quote {
+      padding: 24px;
+    }
+
+    .hero-media img {
+      aspect-ratio: 4 / 3;
+    }
+
+    .hero-badge {
+      left: 12px;
+      bottom: 12px;
+      max-width: 200px;
+      padding: 10px 14px;
+    }
+
+    .hero-badge strong {
+      font-size: 1.1rem;
+    }
+
+    .hero-badge span {
+      font-size: 0.8rem;
+    }
+
+    .logos {
+      gap: 20px 32px;
+    }
+
+    .logos img {
+      height: 44px;
+    }
+  }
+</style>
