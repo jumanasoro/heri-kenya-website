@@ -9,7 +9,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "publish:test": "bash scripts/publish.sh test",
+    "publish:live": "bash scripts/publish.sh live"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",
