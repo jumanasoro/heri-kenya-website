@@ -1,0 +1,197 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Form from '../components/Form.astro';
+import { contact } from '../data/site';
+import heroImage from '../assets/images/media/heri-members.jpg';
+
+const roles = [
+  { title: 'Member', text: 'Join the HERI community and shape our direction.' },
+  { title: 'Volunteer', text: 'Give your time at clean-ups, forums, events and the farm.' },
+  { title: 'Ambassador', text: 'Champion HERI in your network, wherever you are in the world.' },
+  { title: 'Partner', text: 'Work with us as a business, institution or organisation.' },
+  { title: 'Intern', text: 'Gain hands-on research and field experience with our team.' },
+];
+
+const whatsapp = `https://wa.me/${contact.phone.replace(/[^0-9]/g, '')}`;
+---
+
+<Base
+  title="Get Involved & Contact"
+  description="Get involved with HERI-Kenya as a member, volunteer, ambassador, partner or intern, or send us a message."
+>
+  <PageHero
+    eyebrow="Get involved"
+    title="There’s a place for you at HERI"
+    lead="Members, volunteers, ambassadors, partners and interns power everything we do in Diani and beyond."
+    image={heroImage}
+    imageAlt="HERI-Kenya members and staff gathered together in HERI T-shirts"
+    crumbs={[{ label: 'Get Involved', href: '/contact-us/' }]}
+  />
+
+  <section class="section">
+    <div class="container">
+      <ul class="roles">
+        {
+          roles.map((r) => (
+            <li>
+              <h2>{r.title}</h2>
+              <p>{r.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="join">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">Join us</span>
+        <h2>Tell us how you’d like to get involved</h2>
+        <p class="lead">We’ll get back to you with the next steps.</p>
+      </div>
+      <div class="panel">
+        <Form
+          form="get-involved"
+          submitLabel="Send"
+          fields={[
+            { name: 'name', label: 'Full name', type: 'text', required: true, autocomplete: 'name' },
+            { name: 'email', label: 'Email address', type: 'email', required: true, autocomplete: 'email' },
+            {
+              name: 'interest',
+              label: 'I’d like to get involved as',
+              type: 'select',
+              required: true,
+              options: roles.map((r) => r.title),
+            },
+            { name: 'organisation', label: 'Organisation (if any)', type: 'text', autocomplete: 'organization' },
+            { name: 'message', label: 'Why do you want to get involved?', type: 'textarea' },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">Contact us</span>
+        <h2>Send us a message</h2>
+        <ul class="details">
+          <li>
+            <span>Email</span>
+            <a href={`mailto:${contact.email}`}>{contact.email}</a>
+          </li>
+          <li>
+            <span>Phone</span>
+            <a href={`tel:${contact.phone.replace(/\s/g, '')}`}>{contact.phone}</a>
+          </li>
+          <li>
+            <span>WhatsApp</span>
+            <a href={whatsapp} rel="noopener" target="_blank">Chat with us</a>
+          </li>
+          <li>
+            <span>Visit</span>
+            {contact.address}
+          </li>
+        </ul>
+      </div>
+      <div class="panel">
+        <Form
+          form="contact"
+          submitLabel="Send message"
+          fields={[
+            { name: 'name', label: 'Name', type: 'text', required: true, autocomplete: 'name' },
+            { name: 'email', label: 'Email', type: 'email', required: true, autocomplete: 'email' },
+            { name: 'message', label: 'Message', type: 'textarea', required: true },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .roles {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .roles li {
+    padding: 24px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    border-top: 5px solid var(--brand);
+  }
+
+  .roles h2 {
+    font-size: 1.15rem;
+    margin-bottom: 6px;
+  }
+
+  .roles p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: clamp(32px, 6vw, 72px);
+    align-items: start;
+  }
+
+  .panel {
+    padding: clamp(24px, 4vw, 40px);
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    box-shadow: var(--shadow);
+  }
+
+  .details {
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 14px;
+  }
+
+  .details li {
+    display: grid;
+  }
+
+  .details span {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--slate-500);
+  }
+
+  .details a {
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 1023px) {
+    .roles {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .split {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .roles {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,311 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { getPosts } from '../lib/wordpress';
+
+import heroImage from '../assets/images/media/activity-20250608.jpg';
+import members from '../assets/images/media/heri-members.jpg';
+import eggs from '../assets/images/media/students-egg-harvesting.jpg';
+import beach from '../assets/images/media/activity-20250608.jpg';
+import newspaper from '../assets/images/media/plastic-planet-newspaper.jpg';
+import forum from '../assets/images/home/community-forum.jpg';
+import conference from '../assets/images/home/conference-2022.jpeg';
+
+const posts = await getPosts(6);
+const dateFmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const gallery = [
+  { src: beach, alt: 'School pupils take part in a HERI environmental event on the beach in Diani' },
+  { src: eggs, alt: 'Students practise collecting Black Soldier Fly eggs at the HERI farm' },
+  { src: members, alt: 'HERI-Kenya members gathered in HERI T-shirts' },
+  { src: forum, alt: 'A HERI community forum under a shade tree' },
+  { src: conference, alt: 'Participants at a HERI-Kenya event in 2022' },
+  { src: newspaper, alt: 'Newspaper coverage of the Plastic Planet installation in Diani' },
+];
+---
+
+<Base
+  title="Media & Resources"
+  description="News, stories, photos and resources from HERI-Kenya — including our founding story, a poem for HERI, and highlights from our work in Diani."
+>
+  <PageHero
+    eyebrow="Media & resources"
+    title="Stories from the coast"
+    lead="News, voices and moments from HERI’s work with communities, schools and partners in Diani."
+    image={heroImage}
+    imageAlt="School pupils at a HERI environmental event on the beach in Diani"
+    crumbs={[{ label: 'Media & Resources', href: '/media/' }]}
+  />
+
+  <section class="section" aria-labelledby="news-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">News & updates</span>
+        <h2 id="news-title">Latest from HERI</h2>
+      </div>
+      {
+        posts.length > 0 ? (
+          <ul class="posts">
+            {posts.map((p) => (
+              <li>
+                <a class="post" href={p.link}>
+                  <time datetime={p.date}>{dateFmt.format(new Date(p.date))}</time>
+                  <h3>{p.title}</h3>
+                  <p>{p.excerpt}</p>
+                  <span class="link-arrow">Read more</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="empty">
+            News articles are on their way. In the meantime, read our stories below or
+            <a href="/contact-us/">get in touch</a>.
+          </p>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="section section--soft" aria-labelledby="story-title">
+    <div class="container story">
+      <div>
+        <span class="eyebrow">Our story</span>
+        <h2 id="story-title">Why we started HERI</h2>
+        <p class="byline">By Prof. Desiree LaBeaud, Co-Founder &amp; Executive Director</p>
+      </div>
+      <div class="prose">
+        <p>
+          As a physician scientist and global health researcher, I’ve led efforts to stop the number one animal killer of
+          people in the world: mosquitoes! Francis, Bryson and I have worked together to describe mosquito-borne
+          infectious disease burden in communities, link mosquito breeding and disease risk to plastic trash, and conduct
+          school and community-based interventions to prevent disease.
+        </p>
+        <p>
+          As all of this work is done in collaboration with Kenyan scientists, team members, and community stakeholders,
+          our decades-long research has led to improvements in quality of life and job stability for our team and
+          improvements in health for the communities we have served — but there is so much more to do and so many more
+          people to help.
+        </p>
+        <p>
+          Pollution is choking the planet and the people of Kenya, where lack of safe water and poor sanitation lead to
+          infectious diseases and other environmental health risks. These problems are exacerbated by strong cultural
+          stigmas against collecting and working with trash. Although we plan to continue to do good research, we can’t
+          lead grassroots efforts to effect change where it is most needed with research alone.
+        </p>
+        <p>
+          That’s why, after over 15 years of leading infectious disease research in Kenya, I embarked on this new journey:
+          starting HERI, an organisation dedicated to alleviating some of these inequities by focusing on the interface
+          between health and the environment. HERI works with and beside Kenyans to inspire community education, new
+          research, policy change and grassroots activism in environmental health. Our outcomes are both people- and
+          planet-focused.
+        </p>
+        <p>
+          Our goal is to translate the power of scientific knowledge into messages that are actionable in the community,
+          and to change the trajectories of health for our communities and our planet.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="poem-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Voices</span>
+        <h2 id="poem-title">“HERI-Kenya Tuilinde” — a poem by Luti Mwashee</h2>
+        <p class="lead">Written in Kiswahili for HERI, with an English translation.</p>
+      </div>
+      <div class="poem">
+        <div lang="sw">
+          <h3>Kiswahili</h3>
+          <p>
+            Tuboreshe mazingira, pia tuipande miti,<br />
+            Sote tuwe na hasira, kwa wenye kutusaliti,<br />
+            Kijani ndo mazingira, ovyo miti hatukati,<br />
+            Heri kwenu wana Kenya, HERI-Kenya tuilinde.
+          </p>
+          <p>
+            Afya nayo iwe Njema, tujuze nayo jamii,<br />
+            Kenya iwe kama hema, wajae na watalii,<br />
+            Kama HERI tunasema, Mazingira tuchafuii,<br />
+            Heri kwenu wana Kenya, HERI-Kenya tuilinde.
+          </p>
+          <p>
+            Dokta Mutuku hongera, wanzilishi wayo HERI,<br />
+            Desiree pia hongera, pamoja kwenye safari,<br />
+            Na wanachama hongera, kuwajibika na Heri,<br />
+            Heri kwenu wana Kenya,
+          </p>
+        </div>
+        <div>
+          <h3>English</h3>
+          <p>
+            Let’s improve the environment, also plant trees,<br />
+            Let us all be angry, at those who betray us,<br />
+            Green is the environment, we don’t cut down trees,<br />
+            Good luck to you Kenyans. HERI-Kenya, let’s protect it.
+          </p>
+          <p>
+            May health be good, let’s spread it to the community,<br />
+            Let Kenya be like a tent, full of tourists,<br />
+            As HERI we say, Let’s not pollute the environment,<br />
+            Good luck to you Kenyans. HERI-Kenya, let’s protect it.
+          </p>
+          <p>
+            Dr. Mutuku congratulations, its founder HERI,<br />
+            Dr. Desiree also congratulations, along for the ride,<br />
+            And congratulations members, responsible and Happy,<br />
+            Good luck to you Kenyans. HERI-Kenya, let’s protect it.
+          </p>
+        </div>
+      </div>
+      <aside class="guest">
+        <strong>Young writer: Nima Raychaudhuri</strong>
+        <p>A passionate high school student who likes writing about the environment and the books they read.</p>
+        <a class="link-arrow" href="https://bestnima.medium.com/" rel="noopener" target="_blank">Read the blog on Medium</a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section--soft" aria-labelledby="gallery-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Activity highlights</span>
+        <h2 id="gallery-title">Moments from our work</h2>
+      </div>
+      <ul class="gallery">
+        {
+          gallery.map((g) => (
+            <li>
+              <Image src={g.src} alt={g.alt} widths={[400, 700]} sizes="(max-width: 639px) 100vw, 380px" />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .posts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .post {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 24px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .post:hover {
+    box-shadow: var(--shadow);
+  }
+
+  .post time {
+    font-size: 0.85rem;
+    color: var(--slate-500);
+  }
+
+  .post p {
+    flex: 1;
+    color: var(--text-muted);
+  }
+
+  .empty {
+    padding: 24px;
+    border-radius: var(--radius);
+    background: var(--surface-soft);
+  }
+
+  .story {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: clamp(32px, 6vw, 80px);
+    align-items: start;
+  }
+
+  .byline {
+    color: var(--text-muted);
+  }
+
+  .poem {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .poem > div {
+    padding: clamp(24px, 4vw, 36px);
+    border-radius: var(--radius);
+    background: var(--surface-soft);
+  }
+
+  .poem h3 {
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--brand-strong);
+  }
+
+  .poem p {
+    font-style: italic;
+  }
+
+  .guest {
+    margin-top: 32px;
+    padding: 24px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+
+  .guest p {
+    color: var(--text-muted);
+    margin: 4px 0 8px;
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .gallery img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
+
+  @media (max-width: 1023px) {
+    .posts,
+    .gallery {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .story,
+    .poem {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .posts,
+    .gallery {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

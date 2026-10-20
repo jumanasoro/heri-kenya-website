@@ -1,0 +1,256 @@
+---
+// A website form that posts to /api/form.php (see public/api/form.php for the allowed fields).
+import { contact } from '../data/site';
+
+export type Field =
+  | { name: string; label: string; type: 'text' | 'email' | 'tel'; required?: boolean; autocomplete?: string }
+  | { name: string; label: string; type: 'textarea'; required?: boolean }
+  | { name: string; label: string; type: 'select'; options: string[]; required?: boolean }
+  | { name: string; label: string; type: 'checkboxes'; options: string[] };
+
+interface Props {
+  form: 'contact' | 'get-involved' | 'partnership' | 'learn-interest';
+  fields: Field[];
+  submitLabel?: string;
+}
+
+const { form, fields, submitLabel = 'Send' } = Astro.props;
+const uid = `f-${form}`;
+---
+
+<form class="form" method="post" action="/api/form.php" data-form>
+  <input type="hidden" name="form" value={form} />
+  <input type="hidden" name="t" value="" data-started />
+  <!-- Hidden from people; bots that fill it in are ignored. -->
+  <div class="hp" aria-hidden="true">
+    <label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+  </div>
+
+  {
+    fields.map((f) => {
+      const id = `${uid}-${f.name}`;
+      if (f.type === 'checkboxes') {
+        return (
+          <fieldset class="field">
+            <legend>{f.label}</legend>
+            <div class="checks">
+              {f.options.map((o) => (
+                <label class="check">
+                  <input type="checkbox" name={`${f.name}[]`} value={o} />
+                  <span>{o}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        );
+      }
+      return (
+        <div class:list={['field', { 'field--wide': f.type === 'textarea' }]}>
+          <label for={id}>
+            {f.label}
+            {f.required && <span class="req"> *</span>}
+          </label>
+          {f.type === 'textarea' ? (
+            <textarea id={id} name={f.name} rows="5" required={f.required} />
+          ) : f.type === 'select' ? (
+            <select id={id} name={f.name} required={f.required}>
+              <option value="">Choose one…</option>
+              {f.options.map((o) => (
+                <option>{o}</option>
+              ))}
+            </select>
+          ) : (
+            <input
+              id={id}
+              name={f.name}
+              type={f.type}
+              required={f.required}
+              autocomplete={'autocomplete' in f ? f.autocomplete : undefined}
+            />
+          )}
+        </div>
+      );
+    })
+  }
+
+  <div class="actions">
+    <button class="btn btn--primary" type="submit">{submitLabel}</button>
+    <p class="status" role="status" aria-live="polite" data-status></p>
+  </div>
+  <p class="privacy">
+    We only use your details to reply to you. Prefer email? Write to <a href={`mailto:${contact.email}`}>{contact.email}</a>.
+  </p>
+</form>
+
+<script>
+  import { contact } from '../data/site';
+
+  document.querySelectorAll<HTMLFormElement>('[data-form]').forEach((form) => {
+    const started = form.querySelector<HTMLInputElement>('[data-started]');
+    if (started) started.value = String(Date.now());
+    const status = form.querySelector<HTMLElement>('[data-status]');
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!status || !button) return;
+      button.disabled = true;
+      status.className = 'status';
+      status.textContent = 'Sending…';
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        const data = await res.json().catch(() => null);
+        if (!res.ok || !data?.ok) throw new Error(data?.message);
+        status.classList.add('status--ok');
+        status.textContent = data.message;
+        form.reset();
+        if (started) started.value = String(Date.now());
+      } catch (err) {
+        status.classList.add('status--error');
+        status.textContent =
+          (err instanceof Error && err.message) || `Sorry, that didn’t send. Please email ${contact.email}.`;
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+</script>
+
+<style>
+  .form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 20px;
+  }
+
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .field {
+    display: grid;
+    gap: 6px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .field--wide,
+  fieldset.field,
+  .actions,
+  .privacy {
+    grid-column: 1 / -1;
+  }
+
+  label,
+  legend {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  legend {
+    margin-bottom: 8px;
+    padding: 0;
+  }
+
+  .req {
+    color: var(--red-600);
+  }
+
+  input:not([type='checkbox']),
+  select,
+  textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--slate-200);
+    border-radius: var(--radius-sm);
+    background: var(--white);
+    color: var(--text);
+    font: inherit;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--green-500);
+    box-shadow: 0 0 0 3px rgb(84 180 53 / 0.2);
+  }
+
+  .checks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .check {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border: 1.5px solid var(--slate-200);
+    border-radius: 999px;
+    background: var(--white);
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .check:has(input:checked) {
+    border-color: var(--brand);
+    background: var(--green-50);
+  }
+
+  .check input {
+    accent-color: var(--brand);
+    width: 18px;
+    height: 18px;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .status {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .status--ok {
+    color: var(--brand-strong);
+  }
+
+  .status--error {
+    color: var(--red-600);
+  }
+
+  .privacy {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 639px) {
+    .form {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

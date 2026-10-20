@@ -1,0 +1,263 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Form from '../components/Form.astro';
+import heroImage from '../assets/images/media/students-egg-harvesting.jpg';
+import workshop from '../assets/images/home/training-workshop.jpg';
+
+// Planned first courses. Edit freely as the course plan develops.
+const courses = [
+  {
+    title: 'Organic waste at home and work',
+    audience: 'Households, hotels, markets',
+    text: 'Why food waste matters for health, how to sort it at source, and simple ways to keep it out of dumpsites.',
+  },
+  {
+    title: 'Black Soldier Fly farming basics',
+    audience: 'Farmers, youth and women’s groups',
+    text: 'The BSF life cycle, setting up a small unit, feeding larvae, and using larvae and frass safely.',
+  },
+  {
+    title: 'Environment, health and disease',
+    audience: 'Community health workers, everyone',
+    text: 'How waste, water and plastics create breeding sites for mosquitoes — and practical prevention at home.',
+  },
+  {
+    title: 'Plastics and our coast',
+    audience: 'Schools, tourism workers, visitors',
+    text: 'Where coastal plastic comes from, how it harms oceans and livelihoods, and what communities can do.',
+  },
+  {
+    title: 'Climate resilience for communities',
+    audience: 'Community leaders and groups',
+    text: 'Understanding climate risks to health and livelihoods on the coast, and locally led ways to adapt.',
+  },
+  {
+    title: 'Running a school eco-club',
+    audience: 'Teachers and mentors',
+    text: 'A practical guide to running HERI-style eco-club sessions linked to the school curriculum.',
+  },
+];
+
+const steps = [
+  { title: 'Create your account', text: 'Sign up with your email — on your phone or computer.' },
+  { title: 'Learn at your own pace', text: 'Short lessons with videos, pictures and downloadable guides.' },
+  { title: 'Check your understanding', text: 'Quick quizzes after each lesson help it stick.' },
+  { title: 'Earn your certificate', text: 'Finish a course to receive a HERI-Kenya certificate.' },
+];
+---
+
+<Base
+  title="HERI Learning"
+  description="HERI Learning: online courses with certificates on organic waste, Black Soldier Fly farming, environmental health, plastics and climate resilience — launching soon."
+>
+  <PageHero
+    eyebrow="HERI Learning · launching soon"
+    title="Practical courses for healthier communities"
+    lead="Online courses built from HERI’s research and field experience — learn at your own pace, test your knowledge and earn a certificate. In English, with Kiswahili to follow."
+    image={heroImage}
+    imageAlt="Students learn hands-on at the HERI Black Soldier Fly Farm"
+    crumbs={[{ label: 'Learn', href: '/learn/' }]}
+  >
+    <a class="btn btn--primary" href="#notify">Get notified at launch</a>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="eyebrow">How it works</span>
+        <h2>Four steps to your certificate</h2>
+      </div>
+      <ol class="steps">
+        {
+          steps.map((s, i) => (
+            <li>
+              <span class="n">{i + 1}</span>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Planned courses</span>
+        <h2>What you’ll be able to learn</h2>
+        <p class="lead">Our first courses are being written now. Tell us below which ones you want most.</p>
+      </div>
+      <ul class="courses">
+        {
+          courses.map((c) => (
+            <li>
+              <span class="badge">Coming soon</span>
+              <h3>{c.title}</h3>
+              <p class="aud">{c.audience}</p>
+              <p>{c.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="notify">
+    <div class="container split">
+      <div>
+        <span class="eyebrow">Be the first to know</span>
+        <h2>Get notified when courses open</h2>
+        <p class="lead">Leave your details and we’ll email you as soon as the first courses are ready.</p>
+        <Image
+          src={workshop}
+          alt="Community members take part in a HERI training workshop"
+          widths={[480, 800]}
+          sizes="(max-width: 1023px) 100vw, 480px"
+          class="side-img"
+        />
+      </div>
+      <div class="panel">
+        <Form
+          form="learn-interest"
+          submitLabel="Notify me"
+          fields={[
+            { name: 'name', label: 'Name', type: 'text', required: true, autocomplete: 'name' },
+            { name: 'email', label: 'Email', type: 'email', required: true, autocomplete: 'email' },
+            { name: 'topics', label: 'Courses I’m interested in', type: 'checkboxes', options: courses.map((c) => c.title) },
+            { name: 'language', label: 'Preferred language', type: 'select', options: ['English', 'Kiswahili'] },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .steps li {
+    padding: 24px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .n {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 12px;
+    border-radius: 50%;
+    background: var(--brand);
+    color: var(--white);
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1.1rem;
+  }
+
+  .steps h3 {
+    font-size: 1.1rem;
+  }
+
+  .steps p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  .courses {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .courses li {
+    padding: 24px;
+    border-radius: var(--radius);
+    background: var(--white);
+  }
+
+  .badge {
+    display: inline-block;
+    margin-bottom: 12px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: #fef9c3;
+    color: #854d0e;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .courses h3 {
+    font-size: 1.15rem;
+    margin-bottom: 2px;
+  }
+
+  .aud {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--brand-strong);
+  }
+
+  .courses p:not(.aud) {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: clamp(32px, 6vw, 72px);
+    align-items: start;
+  }
+
+  /* 16:10 from the top hides the phone watermark in the photo's bottom corner. */
+  .side-img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-position: top;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    margin-top: 24px;
+  }
+
+  .panel {
+    padding: clamp(24px, 4vw, 40px);
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    box-shadow: var(--shadow);
+  }
+
+  @media (max-width: 1023px) {
+    .steps,
+    .courses {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .split {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .steps,
+    .courses {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

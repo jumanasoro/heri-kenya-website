@@ -1,0 +1,318 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { Image } from 'astro:assets';
+import heroImage from '../assets/images/home/research.png';
+import desiree from '../assets/images/team/desiree-labeaud.jpg';
+import francis from '../assets/images/team/francis-mutuku.jpg';
+
+const leads = [
+  {
+    name: 'Prof. Desiree LaBeaud',
+    role: 'Professor of Pediatrics (Infectious Diseases), Stanford University School of Medicine, USA',
+    photo: desiree,
+    portfolio: 'https://med.stanford.edu/profiles/angelle-labeaud',
+    bio: [
+      'An infectious disease physician and epidemiologist working on arboviruses such as dengue, chikungunya and Rift Valley fever — and how climate, ecology and socio-economic factors shape disease patterns.',
+      'She leads research teams in Kenya and internationally, combining field studies, laboratory science and community engagement, and studies the health impacts of climate change and plastic pollution.',
+    ],
+  },
+  {
+    name: 'Prof. Francis Mutuku',
+    role: 'Professor, Environment & Health Sciences, Technical University of Mombasa, Kenya',
+    photo: francis,
+    portfolio: 'https://www.researchgate.net/profile/Francis-Mutuku',
+    bio: [
+      'A leading researcher in vector-borne diseases and environmental health in coastal Kenya, focused on mosquito ecology, disease transmission and the links between environment and health.',
+      'With over 120 peer-reviewed publications, his research has informed strategies against malaria, dengue, Rift Valley fever and other vector-borne diseases.',
+    ],
+  },
+];
+
+const priorities = [
+  {
+    title: 'Environmental & public health',
+    text: 'How sanitation, waste, water quality and ecosystems influence health outcomes.',
+  },
+  {
+    title: 'Vector-borne & climate-sensitive disease',
+    text: 'The ecological, climatic and social drivers of disease transmission and prevention.',
+  },
+  {
+    title: 'Organic waste & circular economy',
+    text: 'Solutions that cut pollution, improve health and support sustainable livelihoods.',
+  },
+  {
+    title: 'Climate resilience & adaptation',
+    text: 'Community-level responses to climate-related health and environmental risks.',
+  },
+  {
+    title: 'Community knowledge & practice',
+    text: 'Local behaviours and knowledge that make interventions effective and culturally appropriate.',
+  },
+  {
+    title: 'Policy & evidence translation',
+    text: 'Turning findings into tools, models and insights that support decision-making.',
+  },
+];
+
+const purposes = [
+  'Inform community-centred interventions that can be translated into programmes and policy',
+  'Strengthen public health, environmental management and climate-responsive strategies',
+  'Advance knowledge at the intersection of health, environment and climate',
+  'Train and mentor researchers through internships, fellowships and field placements (PhD, Master’s and Bachelor’s)',
+  'Build long-term local research capacity and ethical, participatory practice',
+  'Share findings openly through publications, policy briefs and the HERI Hub',
+];
+
+const ethics = [
+  {
+    title: 'Ethical approval & informed consent',
+    text: 'Participants understand the purpose, methods, risks and benefits; taking part is always voluntary.',
+  },
+  {
+    title: 'Privacy & data protection',
+    text: 'Responsible collection, secure storage and controlled access throughout the research lifecycle.',
+  },
+  {
+    title: 'Communities as partners',
+    text: 'Findings are shared, discussed and used locally — communities are partners, not just participants.',
+  },
+  {
+    title: 'Recognised standards',
+    text: 'Aligned with national and international guidelines for human-subjects, public health and environmental research.',
+  },
+];
+---
+
+<Base
+  title="Research"
+  description="HERI-Kenya research integrates public health, environmental science and community knowledge to generate evidence on environmental health, vector-borne disease, waste and climate."
+>
+  <PageHero
+    eyebrow="Research"
+    title="Evidence that turns into action"
+    lead="Our research brings together public health, environmental science and community knowledge — not only to produce data, but to translate evidence into programmes, policies and practices that improve human and environmental wellbeing."
+    image={heroImage}
+    imageAlt="Researchers handle samples together in a laboratory"
+    crumbs={[{ label: 'Research', href: '/research/' }]}
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Priority areas</span>
+        <h2>What we study</h2>
+      </div>
+      <ul class="priorities">
+        {
+          priorities.map((p) => (
+            <li>
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Research leads</span>
+        <h2>Led by internationally recognised scientists</h2>
+      </div>
+      <div class="leads">
+        {
+          leads.map((l) => (
+            <article class="lead-card">
+              <Image src={l.photo} alt={`Portrait of ${l.name}`} widths={[200, 400]} sizes="160px" />
+              <div>
+                <h3>{l.name}</h3>
+                <p class="role">{l.role}</p>
+                {l.bio.map((b) => (
+                  <p>{b}</p>
+                ))}
+                <a class="link-arrow" href={l.portfolio} rel="noopener" target="_blank">
+                  Research portfolio
+                </a>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container two">
+      <div>
+        <span class="eyebrow">Purpose</span>
+        <h2>Why we do research</h2>
+        <ul class="ticks">
+          {purposes.map((p) => <li>{p}</li>)}
+        </ul>
+      </div>
+      <div>
+        <span class="eyebrow">Ethical safeguards</span>
+        <h2>How we do it responsibly</h2>
+        <ul class="ethics">
+          {
+            ethics.map((e) => (
+              <li>
+                <strong>{e.title}</strong>
+                <p>{e.text}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Collaborate or train with us"
+    text="Universities, researchers and students: partner on applied studies or join a field placement, internship or fellowship."
+  />
+</Base>
+
+<style>
+  .priorities {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: p;
+  }
+
+  .priorities li {
+    padding: 24px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--brand);
+  }
+
+  .priorities h3 {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+  }
+
+  .priorities p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.975rem;
+  }
+
+  .leads {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .lead-card {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 24px;
+    padding: 28px;
+    border-radius: var(--radius);
+    background: var(--white);
+  }
+
+  .lead-card img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .role {
+    color: var(--brand-strong);
+    font-weight: 600;
+    font-size: 0.925rem;
+  }
+
+  .lead-card p:not(.role) {
+    color: var(--text-muted);
+    font-size: 0.975rem;
+  }
+
+  .two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 6vw, 80px);
+    align-items: start;
+  }
+
+  .ticks {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 12px;
+  }
+
+  .ticks li {
+    position: relative;
+    padding-left: 30px;
+  }
+
+  .ticks li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--brand);
+    color: var(--white);
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .ethics {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 14px;
+  }
+
+  .ethics li {
+    padding: 18px 20px;
+    border-radius: var(--radius);
+    background: var(--surface-soft);
+  }
+
+  .ethics p {
+    margin: 4px 0 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 1023px) {
+    .priorities {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .leads,
+    .two {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .priorities {
+      grid-template-columns: 1fr;
+    }
+
+    .lead-card {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

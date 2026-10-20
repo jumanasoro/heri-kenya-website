@@ -37,9 +37,9 @@ export const givingMethods: GivingMethod[] = [
   {
     id: 'sgf',
     name: 'Social Good Fund',
-    bestFor: 'Donors in the United States',
+    bestFor: 'Donors in the United States, and anyone giving by card in US dollars',
     details: null,
-    link: null, // TODO: HERI's Social Good Fund donation page
+    link: { label: 'Give via Social Good Fund', href: 'https://give.socialgoodfund.org/52imR8' },
     note: 'Social Good Fund is a US non-profit. Ask them about tax receipts for your gift.',
   },
 ];

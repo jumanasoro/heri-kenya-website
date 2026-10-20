@@ -7,6 +7,7 @@ import shelter from '../assets/images/bsf/bsf-tour-3.jpg';
 import hotelWaste from '../assets/images/home/hotel-partners-organic-waste.jpg';
 import larvaeBed from '../assets/images/bsf/bsf-tours-2.jpg';
 import larvaeTrays from '../assets/images/bsf/bsf-tours-1.jpg';
+import eggHarvest from '../assets/images/media/students-egg-harvesting.jpg';
 import frassBed from '../assets/images/bsf/bsf-tour-7.jpg';
 import team from '../assets/images/bsf/bsf-tour-6.jpg';
 
@@ -18,6 +19,8 @@ export type TourStop = {
   imageAlt?: string;
   // Small source photos are shown at a modest size so they don't look blurry.
   imageSmall?: boolean;
+  // Crop from the top in a wider frame, e.g. to hide a phone watermark in the bottom corner.
+  cropTop?: boolean;
   lifecycle?: boolean; // show the life-cycle diagram instead of a photo
   paragraphs: string[];
   facts: string[];
@@ -40,7 +43,7 @@ export const tourStops: TourStop[] = [
   {
     id: 'waste',
     label: 'Where waste comes from',
-    title: 'Stop 1 · Where the waste comes from',
+    title: 'Where the waste comes from',
     image: hotelWaste,
     imageAlt: 'Hotel kitchen staff hold an "Organic waste only" sign for the HERI BSF Farm',
     paragraphs: [
@@ -56,7 +59,7 @@ export const tourStops: TourStop[] = [
   {
     id: 'lifecycle',
     label: 'Meet the fly',
-    title: 'Stop 2 · Meet the Black Soldier Fly',
+    title: 'Meet the Black Soldier Fly',
     lifecycle: true,
     paragraphs: [
       'The Black Soldier Fly (Hermetia illucens) is not a pest. Adult flies do not eat, bite or sting — they live for about a week, simply to mate and lay eggs.',
@@ -65,9 +68,21 @@ export const tourStops: TourStop[] = [
     facts: ['Adults do not feed and are not known to spread disease', 'Larvae feed for about two weeks', 'One full cycle takes roughly six weeks'],
   },
   {
+    id: 'eggs',
+    label: 'Egg collection',
+    title: 'Collecting the eggs',
+    image: eggHarvest,
+    imageAlt: 'Students wearing gloves lift wooden egg strips from a breeding crate at the HERI BSF Farm',
+    paragraphs: [
+      'In the breeding area, adult flies lay their eggs in the narrow gaps between stacked wooden strips. Each strip can hold clusters of tiny eggs.',
+      'Our team and trainees carefully lift the strips, collect the eggs and move them to a nursery, where the young larvae hatch and get their first feed before going to the larvae beds.',
+    ],
+    facts: ['Wooden strips give flies a safe place to lay eggs', 'Young larvae start in a nursery', 'A hands-on skill taught to trainees and students'],
+  },
+  {
     id: 'beds',
     label: 'Larvae beds',
-    title: 'Stop 3 · The larvae beds',
+    title: 'The larvae beds',
     image: larvaeBed,
     imageAlt: 'A HERI guide explains the larvae beds to a group of visitors under the farm shade',
     paragraphs: [
@@ -79,7 +94,7 @@ export const tourStops: TourStop[] = [
   {
     id: 'harvest',
     label: 'Harvest',
-    title: 'Stop 4 · Harvesting the larvae',
+    title: 'Harvesting the larvae',
     image: larvaeTrays,
     imageAlt: 'Visitors examine trays of larvae and frass, separated for harvesting',
     paragraphs: [
@@ -91,9 +106,10 @@ export const tourStops: TourStop[] = [
   {
     id: 'frass',
     label: 'Frass compost',
-    title: 'Stop 5 · Frass: organic fertiliser',
+    title: 'Frass: organic fertiliser',
     image: frassBed,
     imageAlt: 'A visitor rakes through a bed of dark, crumbly frass compost',
+    cropTop: true,
     paragraphs: [
       'What the larvae leave behind is called frass — a dark, crumbly organic fertiliser. After curing, it is used to improve soil health in farms, gardens and landscaping.',
       'Nothing is wasted: the food that would have polluted Diani returns to the soil.',
@@ -103,7 +119,7 @@ export const tourStops: TourStop[] = [
   {
     id: 'people',
     label: 'The people',
-    title: 'Stop 6 · The people behind the farm',
+    title: 'The people behind the farm',
     image: team,
     imageAlt: 'The HERI BSF Farm team with visitors in front of the larvae trays',
     imageSmall: true,

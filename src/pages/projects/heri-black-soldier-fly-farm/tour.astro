@@ -61,13 +61,16 @@ import heroImage from '../../../assets/images/bsf/bsf-tours-2.jpg';
                       alt={stop.imageAlt ?? ''}
                       widths={stop.imageSmall ? [320] : [480, 800, 1100]}
                       sizes={stop.imageSmall ? '320px' : '(max-width: 1023px) 100vw, 640px'}
-                      class:list={{ small: stop.imageSmall }}
+                      class:list={{ small: stop.imageSmall, 'crop-top': stop.cropTop }}
                     />
                   )
                 )}
               </div>
               <div class="stop-copy">
-                <h2 id={`${stop.id}-title`}>{stop.title}</h2>
+                <h2 id={`${stop.id}-title`}>
+                  {i > 0 && <span class="stop-num">Stop {i} · </span>}
+                  {stop.title}
+                </h2>
                 {stop.paragraphs.map((p) => (
                   <p>{p}</p>
                 ))}
@@ -341,6 +344,11 @@ import heroImage from '../../../assets/images/bsf/bsf-tours-2.jpg';
     box-shadow: var(--shadow);
   }
 
+  .stop-media img.crop-top {
+    aspect-ratio: 16 / 10;
+    object-position: top;
+  }
+
   .stop-media img.small {
     max-width: 320px;
     margin-inline: auto;
@@ -352,6 +360,10 @@ import heroImage from '../../../assets/images/bsf/bsf-tours-2.jpg';
 
   .stop h2 {
     font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  }
+
+  .stop-num {
+    color: var(--brand);
   }
 
   .facts {
