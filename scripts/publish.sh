@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
-# Build the site and push the finished files to a deploy branch on GitHub.
-# Hostinger deploys that branch automatically.
+# Build the site and push it, as a single site.zip, to a deploy branch on GitHub.
 #
 #   bash scripts/publish.sh test   -> branch deploy-test (hidden from search engines)
 #   bash scripts/publish.sh live   -> branch deploy-live (heri-kenya.org)
+#
+# Hostinger then pulls the branch into the website's _release/ folder and unpacks
+# _release/site.zip as the website. This avoids Hostinger's file-upload server,
+# which some networks cannot reach.
 set -euo pipefail
 
 target="${1:-test}"
@@ -29,24 +32,16 @@ PUBLIC_NOINDEX="$noindex" npx astro build >/dev/null
 work="$(mktemp -d)"
 trap 'git worktree remove --force "$work" >/dev/null 2>&1 || true; rm -rf "$work"' EXIT
 
-# Check out the deploy branch (or start it empty) in a separate folder.
-git fetch origin "$branch" >/dev/null 2>&1 || true
-if git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
-  git worktree add --force -B "$branch" "$work" "origin/$branch" >/dev/null
-else
-  git worktree add --force --orphan -b "$branch" "$work" >/dev/null
-fi
-
-# Replace its contents with the new build.
-find "$work" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
-cp -R dist/. "$work/"
+# Each publish is a fresh single-commit branch, so old zips don't pile up on GitHub.
+git worktree add --force --orphan -b "$branch-tmp" "$work" >/dev/null
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(cygpath -w "$root/scripts/zip-dist.ps1")" \
+  -Out "$(cygpath -w "$work/site.zip")"
 
 cd "$work"
-git add -A
-if git diff --cached --quiet; then
-  echo "Nothing changed since the last publish."
-  exit 0
-fi
+git add site.zip
 git commit -q -m "Publish $target build of $source_commit"
-git push -q origin "$branch"
-echo "Published $source_commit to $branch."
+git push -q --force origin "HEAD:$branch"
+cd "$root"
+git worktree remove --force "$work"
+git branch -q -D "$branch-tmp"
+echo "Published $source_commit to $branch ($(du -h dist | tail -1 | cut -f1) site)."
