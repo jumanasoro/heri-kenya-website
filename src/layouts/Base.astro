@@ -4,7 +4,9 @@ import '@fontsource-variable/inter';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { site } from '../data/site';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import { site, contact } from '../data/site';
+import { founders } from '../data/team';
 
 interface Props {
   title?: string;
@@ -17,6 +19,25 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 const lang = Astro.currentLocale ?? 'en';
 // Test builds (PUBLIC_NOINDEX=true) are hidden from search engines.
 const noindex = import.meta.env.PUBLIC_NOINDEX === 'true';
+// Preview image for links shared on WhatsApp, Facebook, LinkedIn and X (see scripts/make-og-image.mjs).
+const shareImage = new URL('/og-image.jpg', Astro.site);
+const isHome = Astro.url.pathname === '/';
+
+// Organisation details that help search engines describe HERI (homepage only).
+const organisation = {
+  '@context': 'https://schema.org',
+  '@type': 'NGO',
+  name: site.fullName,
+  alternateName: site.name,
+  url: Astro.site?.href,
+  logo: new URL('/logo.png', Astro.site).href,
+  description: site.description,
+  foundingDate: String(site.founded),
+  email: contact.email,
+  telephone: contact.phone.replace(/\s/g, ''),
+  address: { '@type': 'PostalAddress', addressLocality: 'Diani', addressRegion: 'Kwale County', addressCountry: 'KE' },
+  founder: founders.map((f) => ({ '@type': 'Person', name: f.name.replace(/^(Prof\.|Dr\.)\s*/, '') })),
+};
 ---
 
 <!doctype html>
@@ -35,7 +56,14 @@ const noindex = import.meta.env.PUBLIC_NOINDEX === 'true';
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={shareImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="HERI-Kenya: Healthier Environments and Communities" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator} />
+    {isHome && <script type="application/ld+json" set:html={JSON.stringify(organisation)} />}
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -44,5 +72,6 @@ const noindex = import.meta.env.PUBLIC_NOINDEX === 'true';
       <slot />
     </main>
     <Footer />
+    <WhatsAppButton />
   </body>
 </html>

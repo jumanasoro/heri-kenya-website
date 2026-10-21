@@ -4,6 +4,7 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 import CtaBand from '../../components/CtaBand.astro';
+import HowWeWork from '../../components/HowWeWork.astro';
 import { pillars, pillarHref } from '../../data/pillars';
 import researchImage from '../../assets/images/home/research.png';
 
@@ -23,7 +24,9 @@ const completed = projects.filter((p) => p.data.status === 'completed');
     crumbs={[{ label: 'Our Work', href: '/projects/' }]}
   />
 
-  <section class="section section--soft" aria-labelledby="pillars-title">
+  <HowWeWork />
+
+  <section class="section" aria-labelledby="pillars-title">
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">Core pillars</span>

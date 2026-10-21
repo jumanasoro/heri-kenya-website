@@ -1,0 +1,75 @@
+---
+// Floating WhatsApp chat button, shown on every page.
+import { contact } from '../data/site';
+
+const number = contact.phone.replace(/[^0-9]/g, '');
+const greeting = encodeURIComponent('Hello HERI-Kenya, I found you through your website and would like to ask…');
+---
+
+<a
+  class="whatsapp"
+  href={`https://wa.me/${number}?text=${greeting}`}
+  target="_blank"
+  rel="noopener"
+  aria-label="Chat with HERI-Kenya on WhatsApp"
+>
+  <svg viewBox="0 0 32 32" aria-hidden="true">
+    <path
+      fill="currentColor"
+      d="M16.04 3C9.4 3 4 8.36 4 14.95c0 2.1.56 4.16 1.62 5.97L4 29l8.33-1.58a12.1 12.1 0 0 0 3.7.58h.01C22.67 28 28 22.64 28 16.05 28 8.36 22.67 3 16.04 3Zm0 22.9h-.01a10 10 0 0 1-5.1-1.4l-.37-.21-4.94.94.96-4.8-.24-.39a9.84 9.84 0 0 1-1.52-5.09C4.82 9.5 9.85 5.1 16.04 5.1c5.9 0 9.88 4.4 9.88 10.95 0 5.45-4.43 9.85-9.88 9.85Zm5.42-7.37c-.3-.15-1.75-.86-2.02-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47a9 9 0 0 1-1.66-2.06c-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.6-.92-2.2-.24-.57-.49-.5-.67-.5h-.57c-.2 0-.52.08-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.08.15.2 2.1 3.2 5.08 4.48.71.31 1.27.5 1.7.63.72.23 1.37.2 1.88.12.58-.09 1.75-.71 2-1.4.25-.69.25-1.28.17-1.4-.07-.13-.27-.2-.57-.35Z"
+    ></path>
+  </svg>
+  <span class="label">Chat with us</span>
+</a>
+
+<style>
+  .whatsapp {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 40;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 56px;
+    padding: 0 20px 0 16px;
+    border-radius: 999px;
+    background: #25d366;
+    color: #ffffff;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgb(15 23 42 / 0.22);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .whatsapp:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgb(15 23 42 / 0.28);
+  }
+
+  .whatsapp svg {
+    width: 28px;
+    height: 28px;
+    flex: none;
+  }
+
+  /* On phones, show just the round icon so it doesn't cover content. */
+  @media (max-width: 639px) {
+    .whatsapp {
+      right: 14px;
+      bottom: 14px;
+      width: 56px;
+      padding: 0;
+      justify-content: center;
+    }
+
+    .label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+  }
+</style>

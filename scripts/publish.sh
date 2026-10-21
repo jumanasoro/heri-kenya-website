@@ -11,8 +11,8 @@ set -euo pipefail
 
 target="${1:-test}"
 case "$target" in
-  test) branch=deploy-test; noindex=true ;;
-  live) branch=deploy-live; noindex=false ;;
+  test) branch=deploy-test; noindex=true; site_url=https://lightyellow-tiger-876537.hostingersite.com ;;
+  live) branch=deploy-live; noindex=false; site_url=https://heri-kenya.org ;;
   *) echo "Usage: bash scripts/publish.sh [test|live]" >&2; exit 1 ;;
 esac
 
@@ -27,7 +27,7 @@ source_commit="$(git rev-parse --short HEAD)"
 
 echo "Building ($target)..."
 rm -rf dist
-PUBLIC_NOINDEX="$noindex" npx astro build >/dev/null
+SITE_URL="$site_url" PUBLIC_NOINDEX="$noindex" npx astro build >/dev/null
 
 work="$(mktemp -d)"
 trap 'git worktree remove --force "$work" >/dev/null 2>&1 || true; rm -rf "$work"' EXIT

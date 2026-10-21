@@ -43,12 +43,12 @@ export type Stat = { value: string; label: string };
 
 export const stats: Stat[] = [
   { value: '15,000', label: 'Trees planted' },
-  { value: '5,000', label: 'Community members reached' },
-  { value: '10 t', label: 'Organic waste processed' },
+  { value: '6,000', label: 'Community members reached' },
+  { value: '10 tonnes', label: 'Organic waste processed' },
   { value: '150', label: 'Community service providers trained' },
-  { value: '200+', label: 'Research publications' },
+  { value: '200+', label: 'Publications by our research leads' },
   { value: '35+', label: 'Internships' },
-  { value: '100', label: 'Period jobs created' },
+  { value: '100', label: 'Short-term jobs created' },
   { value: '10', label: 'Events & conferences' },
 ];
 

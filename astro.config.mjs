@@ -1,9 +1,13 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
+
+// SITE_URL lets test builds use the test address in share links and the sitemap.
+const site = process.env.SITE_URL ?? 'https://heri-kenya.org';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://heri-kenya.org',
+  site,
   // Keep the existing WordPress URLs (e.g. /projects/, /contact-us/) so links and rankings survive.
   trailingSlash: 'always',
   i18n: {
@@ -12,4 +16,10 @@ export default defineConfig({
     defaultLocale: 'en',
     routing: { prefixDefaultLocale: false },
   },
+  integrations: [
+    sitemap({
+      // Pages that shouldn't appear in search results.
+      filter: (page) => !/\/(thank-you|404)\/?$/.test(page),
+    }),
+  ],
 });

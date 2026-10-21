@@ -9,12 +9,14 @@ export type Field =
   | { name: string; label: string; type: 'checkboxes'; options: string[] };
 
 interface Props {
-  form: 'contact' | 'get-involved' | 'partnership' | 'learn-interest';
+  form: 'contact' | 'get-involved' | 'partnership' | 'learn-interest' | 'newsletter';
   fields: Field[];
   submitLabel?: string;
+  // First sentence of the note under the button.
+  privacyNote?: string;
 }
 
-const { form, fields, submitLabel = 'Send' } = Astro.props;
+const { form, fields, submitLabel = 'Send', privacyNote = 'We only use your details to reply to you.' } = Astro.props;
 const uid = `f-${form}`;
 ---
 
@@ -78,7 +80,7 @@ const uid = `f-${form}`;
     <p class="status" role="status" aria-live="polite" data-status></p>
   </div>
   <p class="privacy">
-    We only use your details to reply to you. Prefer email? Write to <a href={`mailto:${contact.email}`}>{contact.email}</a>.
+    {privacyNote} Prefer email? Write to <a href={`mailto:${contact.email}`}>{contact.email}</a>.
   </p>
 </form>
 
