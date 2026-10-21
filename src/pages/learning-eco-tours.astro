@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import heroImage from '../assets/images/home/eco-tour-visitors.jpg';
-import { donateHref } from '../data/site';
+import { donateHref, externalLink } from '../data/site';
 
 // Public link to the Google Form (the old site linked to the form's /edit page, which visitors can't open).
 const bookingForm =
@@ -114,7 +114,7 @@ const supports = [
         <ul class="ticks">
           {supports.map((s) => <li>{s}</li>)}
         </ul>
-        <a class="link-arrow" href={donateHref}>Or support the farm with a gift</a>
+        <a class="link-arrow" href={donateHref} {...externalLink}>Or support the farm with a gift</a>
       </div>
     </div>
   </section>

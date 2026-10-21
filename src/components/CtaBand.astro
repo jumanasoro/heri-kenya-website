@@ -1,5 +1,5 @@
 ---
-import { donateHref } from '../data/site';
+import { donateHref, externalLink } from '../data/site';
 
 interface Props {
   title?: string;
@@ -19,7 +19,7 @@ const {
       <p>{text}</p>
     </div>
     <div class="btn-row">
-      <a class="btn btn--light" href={donateHref}>Donate</a>
+      <a class="btn btn--light" href={donateHref} {...externalLink}>Donate</a>
       <a class="btn btn--ghost-light" href="/partnerships-csr/">Partner with us</a>
     </div>
   </div>

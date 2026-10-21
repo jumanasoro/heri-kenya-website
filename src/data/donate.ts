@@ -1,3 +1,5 @@
+import { donateHref } from './site';
+
 // Ways to give. Leave a value as null until it is confirmed — the Support page then shows
 // "details coming soon" for that method instead of publishing anything wrong.
 
@@ -39,7 +41,7 @@ export const givingMethods: GivingMethod[] = [
     name: 'Social Good Fund',
     bestFor: 'Donors in the United States, and anyone giving by card in US dollars',
     details: null,
-    link: { label: 'Give via Social Good Fund', href: 'https://give.socialgoodfund.org/52imR8' },
+    link: { label: 'Give via Social Good Fund', href: donateHref },
     note: 'Social Good Fund is a US non-profit. Ask them about tax receipts for your gift.',
   },
 ];

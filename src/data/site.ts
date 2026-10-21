@@ -39,7 +39,12 @@ export const nav: NavItem[] = [
   { label: 'Get Involved', href: '/contact-us/' },
 ];
 
-export const donateHref = '/support/';
+// Donate buttons go straight to HERI's Social Good Fund campaign (opened in a new tab).
+export const donateHref = 'https://give.socialgoodfund.org/52imR8?ref=ab_5sjm4pVIUtX5sjm4pVIUtX';
+// The Support Us page lists every way to give, including M-Pesa and bank transfer.
+export const supportHref = '/support/';
+// Spread onto links that leave the site: <a href={donateHref} {...externalLink}>.
+export const externalLink = { target: '_blank', rel: 'noopener' } as const;
 
 export type Stat = { value: string; label: string };
 
@@ -72,7 +77,7 @@ export const audiences: Audience[] = [
       'Train community health and environment champions',
       'Every gift tracked against real outcomes',
     ],
-    cta: { label: 'Support our work', href: '/support/' },
+    cta: { label: 'Support our work', href: donateHref },
   },
   {
     key: 'partners',

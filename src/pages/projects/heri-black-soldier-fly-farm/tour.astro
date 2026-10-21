@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import Base from '../../../layouts/Base.astro';
 import LifeCycle from '../../../components/LifeCycle.astro';
 import { tourStops } from '../../../data/bsf-tour';
-import { donateHref } from '../../../data/site';
+import { donateHref, externalLink } from '../../../data/site';
 import heroImage from '../../../assets/images/bsf/bsf-tours-2.jpg';
 ---
 
@@ -113,7 +113,7 @@ import heroImage from '../../../assets/images/bsf/bsf-tours-2.jpg';
           </a>
         </li>
         <li>
-          <a class="end-card" href={donateHref}>
+          <a class="end-card" href={donateHref} {...externalLink}>
             <strong>Help us scale</strong>
             <span>Fund more processing capacity and community training.</span>
           </a>

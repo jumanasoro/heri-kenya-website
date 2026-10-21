@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import { site, stats, audiences, projects, testimonials, partners, donateHref } from '../data/site';
+import { site, stats, audiences, projects, testimonials, partners, donateHref, externalLink } from '../data/site';
 
 import heroImage from '../assets/images/home/community-forum.jpg';
 import bsfImage from '../assets/images/bsf/bsf-tours-1.jpg';
@@ -41,12 +41,7 @@ const approach = [
           health and a sustainable environment.
         </p>
         <div class="btn-row">
-          <a
-            class="btn btn--primary"
-            href="https://give.socialgoodfund.org/52imR8?ref=ab_5sjm4pVIUtX5sjm4pVIUtX"
-            target="_blank"
-            rel="noopener">Support our work</a
-          >
+          <a class="btn btn--primary" href={donateHref} {...externalLink}>Support our work</a>
           <a class="btn btn--outline" href="/projects/">See what we do</a>
         </div>
       </div>
@@ -108,7 +103,7 @@ const approach = [
                   <li>{pt}</li>
                 ))}
               </ul>
-              <a class="link-arrow" href={a.cta.href}>
+              <a class="link-arrow" href={a.cta.href} {...(a.cta.href.startsWith('http') ? externalLink : {})}>
                 {a.cta.label}
               </a>
             </article>
@@ -309,7 +304,7 @@ const approach = [
           impact on environmental health.
         </p>
         <div class="btn-row">
-          <a class="btn btn--primary" href={donateHref}>Donate</a>
+          <a class="btn btn--primary" href={donateHref} {...externalLink}>Donate</a>
           <a class="btn btn--ghost-light" href="/partnerships-csr/">Become a partner</a>
           <a class="btn btn--ghost-light" href="/learning-eco-tours/">Visit us in Diani</a>
         </div>
