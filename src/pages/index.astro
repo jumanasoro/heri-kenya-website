@@ -95,6 +95,41 @@ import tourImage from '../assets/images/home/eco-tour-visitors.jpg';
     </div>
   </section>
 
+  <!-- Awards -->
+  <section class="section" aria-labelledby="awards-title">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="eyebrow">Recognition</span>
+        <h2 id="awards-title">Awards &amp; recognition</h2>
+        <p class="lead">Our work has been recognised by partners and institutions in Kenya and beyond.</p>
+      </div>
+      <ul class="awards">
+        {
+          awards.map((a) => (
+            <li class:list={['award', { 'award--placeholder': a.placeholder }]}>
+              <span class="award-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="9" r="6" />
+                  <path d="M8.5 13.9 7 22l5-3 5 3-1.5-8.1" />
+                </svg>
+              </span>
+              <span class="award-year">{a.year}</span>
+              <h3>{a.title}</h3>
+              <p class="award-by">{a.awardedBy}</p>
+              {a.note && <p class="award-note">{a.note}</p>}
+              {a.link && (
+                <a class="link-arrow" href={a.link} {...externalLink}>
+                  Read more
+                </a>
+              )}
+              {a.placeholder && <span class="award-soon">Details coming soon</span>}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
   <!-- Audience paths -->
   <section class="section" aria-labelledby="paths-title">
     <div class="container">
@@ -185,41 +220,6 @@ import tourImage from '../assets/images/home/eco-tour-visitors.jpg';
           class="learn-img"
         />
       </div>
-    </div>
-  </section>
-
-  <!-- Awards -->
-  <section class="section section--soft" aria-labelledby="awards-title">
-    <div class="container">
-      <div class="section-head section-head--center">
-        <span class="eyebrow">Recognition</span>
-        <h2 id="awards-title">Awards &amp; recognition</h2>
-        <p class="lead">Our work has been recognised by partners and institutions in Kenya and beyond.</p>
-      </div>
-      <ul class="awards">
-        {
-          awards.map((a) => (
-            <li class:list={['award', { 'award--placeholder': a.placeholder }]}>
-              <span class="award-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="9" r="6" />
-                  <path d="M8.5 13.9 7 22l5-3 5 3-1.5-8.1" />
-                </svg>
-              </span>
-              <span class="award-year">{a.year}</span>
-              <h3>{a.title}</h3>
-              <p class="award-by">{a.awardedBy}</p>
-              {a.note && <p class="award-note">{a.note}</p>}
-              {a.link && (
-                <a class="link-arrow" href={a.link} {...externalLink}>
-                  Read more
-                </a>
-              )}
-              {a.placeholder && <span class="award-soon">Details coming soon</span>}
-            </li>
-          ))
-        }
-      </ul>
     </div>
   </section>
 
@@ -644,7 +644,7 @@ import tourImage from '../assets/images/home/eco-tour-visitors.jpg';
     align-items: flex-start;
     padding: 28px;
     border-radius: var(--radius);
-    background: var(--white);
+    background: var(--surface-soft);
     border-top: 5px solid var(--sun-400);
   }
 
@@ -697,7 +697,7 @@ import tourImage from '../assets/images/home/eco-tour-visitors.jpg';
     margin-top: 14px;
     padding: 2px 10px;
     border-radius: 999px;
-    background: var(--green-50);
+    background: var(--white);
     color: var(--slate-600);
     font-size: 0.8rem;
     font-weight: 600;
