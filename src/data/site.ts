@@ -125,7 +125,7 @@ export const partners: Partner[] = [
   { name: 'Stanford University', logo: stanford },
   { name: 'National Environment Management Authority (NEMA)', logo: nema },
   { name: 'County Government of Kwale', logo: kwale },
-  { name: 'DTW', logo: dtw },
+  { name: 'Diani Turtle Watch', logo: dtw },
   { name: 'Samba Sports', logo: samba },
   { name: 'Diani Beach Youth Cleaning', logo: dybc },
   { name: 'Gombato Youth for Change', logo: gyfc },

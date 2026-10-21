@@ -794,14 +794,11 @@ import tourImage from '../assets/images/home/eco-tour-visitors.jpg';
     width: auto;
     max-width: 150px;
     object-fit: contain;
-    filter: grayscale(1);
-    opacity: 0.75;
-    transition: filter 0.2s, opacity 0.2s;
+    transition: transform 0.2s;
   }
 
   .logos img:hover {
-    filter: none;
-    opacity: 1;
+    transform: scale(1.05);
   }
 
   /* Final CTA */
