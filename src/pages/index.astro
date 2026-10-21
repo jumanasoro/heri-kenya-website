@@ -2,14 +2,20 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import { pillars, pillarHref } from '../data/pillars';
-import { site, stats, audiences, projects, testimonials, partners, donateHref, externalLink } from '../data/site';
+import { getCollection } from 'astro:content';
+import ProjectCard from '../components/ProjectCard.astro';
+import { site, stats, audiences, testimonials, partners, donateHref, externalLink } from '../data/site';
 
 import heroImage from '../assets/images/home/community-forum.jpg';
 import bsfImage from '../assets/images/bsf/bsf-tours-1.jpg';
 import learnImage from '../assets/images/home/training-workshop.jpg';
 import tourImage from '../assets/images/home/eco-tour-visitors.jpg';
 
-const featured = projects;
+// All projects: active ones first, then completed, each in their set order.
+const allProjects = (await getCollection('projects')).sort(
+  (a, b) =>
+    Number(a.data.status === 'completed') - Number(b.data.status === 'completed') || a.data.order - b.data.order,
+);
 
 const approach = [
   {
@@ -151,37 +157,23 @@ const approach = [
     </div>
   </section>
 
-  <!-- Flagship projects -->
-  <section class="section" aria-labelledby="projects-title">
+  <!-- Impact numbers -->
+  <section class="section" aria-labelledby="numbers-title">
     <div class="container">
-      <div class="section-head split-head">
-        <div>
-          <span class="eyebrow">Our flagship work</span>
-          <h2 id="projects-title">Projects that change daily life</h2>
-        </div>
-        <a class="link-arrow" href="/projects/">All projects</a>
+      <div class="section-head section-head--center">
+        <span class="eyebrow">Impact snapshot</span>
+        <h2 id="numbers-title">Five years, in numbers</h2>
       </div>
-
-      <div class="projects">
+      <ul class="numbers">
         {
-          featured.map((p, i) => (
-            <a class={`project ${i === 0 ? 'project--wide' : ''}`} href={p.href}>
-              {p.image && (
-                <Image
-                  src={p.image}
-                  alt=""
-                  widths={[400, 700, 1000]}
-                  sizes={i === 0 ? '(max-width: 767px) 100vw, 66vw' : '(max-width: 767px) 100vw, 33vw'}
-                />
-              )}
-              <div class="project-body">
-                <h3>{p.title}</h3>
-                <p>{p.summary}</p>
-              </div>
-            </a>
+          stats.map((s) => (
+            <li>
+              <strong>{s.value}</strong>
+              <span>{s.label}</span>
+            </li>
           ))
         }
-      </div>
+      </ul>
     </div>
   </section>
 
@@ -245,23 +237,33 @@ const approach = [
     </div>
   </section>
 
-  <!-- Full impact numbers -->
-  <section class="section section--soft" aria-labelledby="numbers-title">
+  <!-- All projects -->
+  <section class="section" aria-labelledby="projects-title">
     <div class="container">
-      <div class="section-head section-head--center">
-        <span class="eyebrow">Impact snapshot</span>
-        <h2 id="numbers-title">Five years, in numbers</h2>
+      <div class="projects-panel">
+        <div class="section-head split-head">
+          <div>
+            <span class="eyebrow">Our projects</span>
+            <h2 id="projects-title">Everything we work on</h2>
+          </div>
+          <a class="link-arrow" href="/projects/">Browse by pillar</a>
+        </div>
+        <ul class="all-projects">
+          {
+            allProjects.map((p) => (
+              <li>
+                <ProjectCard
+                  title={p.data.title}
+                  summary={p.data.summary}
+                  href={`/projects/${p.id}/`}
+                  image={p.data.cover}
+                  tag={p.data.status === 'completed' ? 'Completed' : p.data.category}
+                />
+              </li>
+            ))
+          }
+        </ul>
       </div>
-      <ul class="numbers">
-        {
-          stats.map((s) => (
-            <li>
-              <strong>{s.value}</strong>
-              <span>{s.label}</span>
-            </li>
-          ))
-        }
-      </ul>
     </div>
   </section>
 
@@ -607,58 +609,36 @@ const approach = [
     margin-bottom: 0;
   }
 
-  .projects {
+  /* A rounded panel that holds every project card. */
+  .projects-panel {
+    padding: clamp(24px, 4vw, 48px);
+    border-radius: var(--radius-lg);
+    background: var(--surface-soft);
+    border: 1px solid var(--green-100);
+  }
+
+  .all-projects {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-
-  .project {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    border-radius: var(--radius);
-    background: var(--white);
-    border: 1px solid var(--border);
-    color: inherit;
-    text-decoration: none;
-    transition: box-shadow 0.2s, transform 0.2s;
-  }
-
-  .project:hover {
-    box-shadow: var(--shadow);
-    transform: translateY(-2px);
-  }
-
-  .project img {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
-  }
-
-  .project--wide {
-    grid-column: span 2;
-    grid-row: span 2;
-  }
-
-  .project--wide img {
-    aspect-ratio: auto;
-    flex: 1;
-    min-height: 280px;
-  }
-
-  .project-body {
-    padding: 20px 24px 24px;
-  }
-
-  .project-body h3 {
-    margin-bottom: 6px;
-  }
-
-  .project-body p {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
     margin: 0;
-    font-size: 0.975rem;
-    color: var(--text-muted);
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Keep the cards compact: show the first three lines of each summary. */
+  .all-projects :global(.body p) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+    /* Don't stretch, or a fourth line peeks out under the "…"; push "Learn more" down instead. */
+    flex: none;
+  }
+
+  .all-projects :global(.body .link-arrow) {
+    margin-top: auto;
   }
 
   /* Feature blocks */
@@ -731,7 +711,7 @@ const approach = [
 
   .numbers li {
     padding: 28px 24px;
-    background: var(--white);
+    background: var(--surface-soft);
     border-radius: var(--radius);
     text-align: center;
   }
@@ -883,7 +863,7 @@ const approach = [
       grid-template-columns: 1fr;
     }
 
-    .projects {
+    .all-projects {
       grid-template-columns: 1fr 1fr;
     }
 
@@ -905,19 +885,8 @@ const approach = [
   }
 
   @media (max-width: 767px) {
-
-    .projects {
+    .all-projects {
       grid-template-columns: 1fr;
-    }
-
-    .project--wide {
-      grid-column: auto;
-      grid-row: auto;
-    }
-
-    .project--wide img {
-      aspect-ratio: 16 / 10;
-      min-height: 0;
     }
 
     .path,

@@ -1,13 +1,6 @@
 // Shared site content. Edit text here and it updates everywhere it is used.
 import type { ImageMetadata } from 'astro';
 
-import bsfTours from '../assets/images/bsf/bsf-tours-1.jpg';
-import treePlanting from '../assets/images/home/tree-planting.jpg';
-import communityForum from '../assets/images/home/community-forum.jpg';
-import ecoTourVisitors from '../assets/images/home/eco-tour-visitors.jpg';
-import hotelPartners from '../assets/images/home/hotel-partners-organic-waste.jpg';
-import research from '../assets/images/home/research.png';
-
 import stanford from '../assets/images/partners/Stanford.png';
 import nema from '../assets/images/partners/NEMA-1.jpg';
 import kwale from '../assets/images/partners/Kwale-County.jpg';
@@ -100,59 +93,6 @@ export const audiences: Audience[] = [
       'Visit the BSF farm and learning centre',
     ],
     cta: { label: 'Start learning', href: '/learn/' },
-  },
-];
-
-// Homepage project highlights. Full project pages live in src/content/projects/.
-export type Project = {
-  title: string;
-  href: string;
-  summary: string;
-  image?: ImageMetadata;
-};
-
-export const projects: Project[] = [
-  {
-    title: 'Black Soldier Fly Farm',
-    href: '/projects/heri-black-soldier-fly-farm/',
-    summary:
-      'Turning organic waste from an environmental health risk into compost and protein-rich animal feed — a live demonstration and training site in Diani.',
-    image: bsfTours,
-  },
-  {
-    title: 'Research',
-    href: '/research/',
-    summary:
-      'Assessments, surveys and applied studies that make every intervention relevant, ethical and effective.',
-    image: research,
-  },
-  {
-    title: 'Community Education Forums',
-    href: '/projects/heri-community-forums/',
-    summary:
-      'Spaces for dialogue and action where community experience shapes shared solutions to health and environmental issues.',
-    image: communityForum,
-  },
-  {
-    title: 'School Eco-Clubs',
-    href: '/projects/heri-school-eco-clubs/',
-    summary:
-      'Students turning environmental knowledge into everyday action through tree planting, waste management and climate education.',
-    image: treePlanting,
-  },
-  {
-    title: 'Diani Sustainability Collective',
-    href: '/projects/diani-sustainability-collective/',
-    summary:
-      'Hotels, businesses, conservation groups and communities aligning on shared local challenges for greater impact.',
-    image: hotelPartners,
-  },
-  {
-    title: 'Sustainability Champions & Ambassadors',
-    href: '/projects/heri-sustainability-champions-ambassadors/',
-    summary:
-      'A global network raising awareness, influencing policy and mobilising resources for HERI’s mission.',
-    image: ecoTourVisitors,
   },
 ];
 
