@@ -59,42 +59,6 @@ export const stats: Stat[] = [
   { value: '10', label: 'Events & conferences' },
 ];
 
-// HERI-Kenya's four core pillars, shown under the homepage hero.
-// DRAFT TEXT: replace each `text` with HERI's own wording when ready.
-export type Pillar = {
-  key: 'circular' | 'capacity' | 'women' | 'research';
-  title: string;
-  text: string;
-  href: string;
-};
-
-export const pillars: Pillar[] = [
-  {
-    key: 'circular',
-    title: 'Circular Economy',
-    text: 'Turning organic waste into compost and protein-rich animal feed through our Black Soldier Fly Farm.',
-    href: '/projects/heri-black-soldier-fly-farm/',
-  },
-  {
-    key: 'capacity',
-    title: 'Capacity Development & Awareness',
-    text: 'Training, school eco-clubs and community forums that build skills and knowledge for healthier living.',
-    href: '/projects/heri-community-forums/',
-  },
-  {
-    key: 'women',
-    title: 'Women & Community Empowerment',
-    text: 'Creating leadership, livelihoods and a stronger voice for women, youth and local communities.',
-    href: '/projects/gender-leadership-for-our-world-glow/',
-  },
-  {
-    key: 'research',
-    title: 'Research',
-    text: 'Evidence on environmental health, disease and waste that guides every intervention and informs policy.',
-    href: '/research/',
-  },
-];
-
 export type Audience = {
   key: string;
   title: string;

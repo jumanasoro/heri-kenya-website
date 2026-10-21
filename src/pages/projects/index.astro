@@ -4,6 +4,7 @@ import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 import CtaBand from '../../components/CtaBand.astro';
+import { pillars, pillarHref } from '../../data/pillars';
 import researchImage from '../../assets/images/home/research.png';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
@@ -22,8 +23,30 @@ const completed = projects.filter((p) => p.data.status === 'completed');
     crumbs={[{ label: 'Our Work', href: '/projects/' }]}
   />
 
+  <section class="section section--soft" aria-labelledby="pillars-title">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Core pillars</span>
+        <h2 id="pillars-title">Four pillars, one mission</h2>
+      </div>
+      <ul class="grid grid--4">
+        {
+          pillars.map((p) => (
+            <li>
+              <ProjectCard title={p.title} summary={p.summary} href={pillarHref(p)} image={p.image} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
   <section class="section">
     <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Projects</span>
+        <h2>All our projects</h2>
+      </div>
       <ul class="grid">
         {
           active.map((p) => (
@@ -85,19 +108,25 @@ const completed = projects.filter((p) => p.data.status === 'completed');
     list-style: none;
   }
 
+  .grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
   .sub {
     margin-top: clamp(48px, 7vw, 80px);
     font-size: clamp(1.4rem, 2.6vw, 1.9rem);
   }
 
   @media (max-width: 1023px) {
-    .grid {
+    .grid,
+    .grid--4 {
       grid-template-columns: 1fr 1fr;
     }
   }
 
   @media (max-width: 639px) {
-    .grid {
+    .grid,
+    .grid--4 {
       grid-template-columns: 1fr;
     }
   }

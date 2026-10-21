@@ -1,0 +1,237 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { pillars, pillarHref } from '../../data/pillars';
+
+// Research links to its own page, so it has no pillar page here.
+export const getStaticPaths = (() =>
+  pillars.filter((p) => !p.href).map((pillar) => ({ params: { slug: pillar.slug }, props: { pillar } }))) satisfies GetStaticPaths;
+
+const { pillar } = Astro.props;
+
+const allProjects = await getCollection('projects');
+const projects = pillar.projects
+  .map((id) => allProjects.find((p) => p.id === id))
+  .filter((p): p is NonNullable<typeof p> => Boolean(p));
+
+const others = pillars.filter((p) => p.slug !== pillar.slug);
+---
+
+<Base title={pillar.title} description={pillar.summary}>
+  <PageHero
+    eyebrow="Core pillar"
+    title={pillar.title}
+    lead={pillar.intro}
+    image={pillar.image}
+    imageAlt={pillar.imageAlt}
+    crumbs={[
+      { label: 'Our Work', href: '/projects/' },
+      { label: pillar.title, href: pillarHref(pillar) },
+    ]}
+  />
+
+  <section class="section">
+    <div class="container two">
+      <div>
+        <span class="eyebrow">What this pillar covers</span>
+        <h2>Our focus</h2>
+      </div>
+      <ul class="focus">
+        {pillar.focus.map((f) => <li>{f}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  {
+    projects.length > 0 && (
+      <section class="section section--soft">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Projects</span>
+            <h2>Work under this pillar</h2>
+          </div>
+          <ul class="grid">
+            {projects.map((p) => (
+              <li>
+                <ProjectCard
+                  title={p.data.title}
+                  summary={p.data.summary}
+                  href={`/projects/${p.id}/`}
+                  image={p.data.cover}
+                  tag={p.data.status === 'completed' ? 'Completed' : p.data.category}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    pillar.related && pillar.related.length > 0 && (
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Explore more</span>
+            <h2>Related</h2>
+          </div>
+          <ul class="related">
+            {pillar.related.map((r) => (
+              <li>
+                <a href={r.href}>
+                  <strong>{r.label}</strong>
+                  <span>{r.text}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Our core pillars</span>
+        <h2>Explore our other pillars</h2>
+      </div>
+      <ul class="others">
+        {
+          others.map((p) => (
+            <li>
+              <a href={pillarHref(p)}>
+                <strong>{p.title}</strong>
+                <span>{p.summary}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .two {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: clamp(24px, 5vw, 64px);
+    align-items: start;
+  }
+
+  .two h2 {
+    margin: 0;
+  }
+
+  .focus {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .focus li {
+    position: relative;
+    padding: 16px 18px 16px 50px;
+    border-radius: var(--radius);
+    background: var(--surface-soft);
+    font-weight: 600;
+  }
+
+  .focus li::before {
+    content: '✓';
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--brand);
+    color: var(--white);
+    font-size: 0.8rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .related,
+  .others {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .related a,
+  .others a {
+    display: grid;
+    gap: 4px;
+    height: 100%;
+    padding: 20px 22px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--white);
+    color: inherit;
+    text-decoration: none;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+
+  .related a:hover,
+  .others a:hover {
+    border-color: var(--green-500);
+    box-shadow: var(--shadow);
+  }
+
+  .related strong,
+  .others strong {
+    font-family: var(--font-heading);
+    color: var(--brand-strong);
+  }
+
+  .related span,
+  .others span {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 1023px) {
+    .two {
+      grid-template-columns: 1fr;
+    }
+
+    .grid,
+    .related,
+    .others {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .focus,
+    .grid,
+    .related,
+    .others {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
