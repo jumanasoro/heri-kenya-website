@@ -99,6 +99,26 @@ const approach = [
     </div>
   </section>
 
+  <!-- Impact numbers -->
+  <section class="section section--soft" aria-labelledby="numbers-title">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="eyebrow">Impact snapshot</span>
+        <h2 id="numbers-title">Five years, in numbers</h2>
+      </div>
+      <ul class="numbers">
+        {
+          stats.map((s) => (
+            <li>
+              <strong>{s.value}</strong>
+              <span>{s.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
   <!-- Audience paths -->
   <section class="section" aria-labelledby="paths-title">
     <div class="container">
@@ -154,26 +174,6 @@ const approach = [
           ))
         }
       </ol>
-    </div>
-  </section>
-
-  <!-- Impact numbers -->
-  <section class="section" aria-labelledby="numbers-title">
-    <div class="container">
-      <div class="section-head section-head--center">
-        <span class="eyebrow">Impact snapshot</span>
-        <h2 id="numbers-title">Five years, in numbers</h2>
-      </div>
-      <ul class="numbers">
-        {
-          stats.map((s) => (
-            <li>
-              <strong>{s.value}</strong>
-              <span>{s.label}</span>
-            </li>
-          ))
-        }
-      </ul>
     </div>
   </section>
 
@@ -711,7 +711,7 @@ const approach = [
 
   .numbers li {
     padding: 28px 24px;
-    background: var(--surface-soft);
+    background: var(--white);
     border-radius: var(--radius);
     text-align: center;
   }
