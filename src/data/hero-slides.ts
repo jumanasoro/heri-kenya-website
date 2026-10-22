@@ -7,6 +7,7 @@ import bsf from '../assets/images/bsf/bsf-tours-2.jpg';
 import beach from '../assets/images/media/activity-20250608.jpg';
 import trees from '../assets/images/home/tree-planting.jpg';
 import members from '../assets/images/media/heri-members.jpg';
+import outreach from '../assets/images/media/outreach-stand.webp';
 
 export type HeroSlide = { image: ImageMetadata; alt: string; caption: string; focus?: string };
 
@@ -22,6 +23,12 @@ export const heroSlides: HeroSlide[] = [
     alt: 'A HERI guide explains the Black Soldier Fly larvae beds to a group of visitors',
     caption: 'Guided learning at the BSF Farm',
     focus: 'center 40%',
+  },
+  {
+    image: outreach,
+    alt: 'A HERI team member in a yellow T-shirt shows visitors products at an outreach stand',
+    caption: 'Sharing our work with visitors',
+    focus: 'center 35%',
   },
   {
     image: beach,

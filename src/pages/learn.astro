@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Form from '../components/Form.astro';
 import heroImage from '../assets/images/media/students-egg-harvesting.jpg';
-import workshop from '../assets/images/home/training-workshop.jpg';
+import workshop from '../assets/images/media/community-training.webp';
 
 // Planned first courses. Edit freely as the course plan develops.
 const courses = [
@@ -113,7 +113,7 @@ const steps = [
         <p class="lead">Leave your details and we’ll email you as soon as the first courses are ready.</p>
         <Image
           src={workshop}
-          alt="Community members take part in a HERI training workshop"
+          alt="A HERI trainer in a lab coat leads a community training session in Kiswahili beside the HERI-Kenya banner"
           widths={[480, 800]}
           sizes="(max-width: 1023px) 100vw, 480px"
           class="side-img"
@@ -226,11 +226,9 @@ const steps = [
     align-items: start;
   }
 
-  /* 16:10 from the top hides the phone watermark in the photo's bottom corner. */
   .side-img {
     width: 100%;
     aspect-ratio: 16 / 10;
-    object-position: top;
     object-fit: cover;
     border-radius: var(--radius-lg);
     margin-top: 24px;

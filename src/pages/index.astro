@@ -9,7 +9,7 @@ import { awards } from '../data/awards';
 import Form from '../components/Form.astro';
 
 import bsfImage from '../assets/images/media/students-egg-harvesting.jpg';
-import learnImage from '../assets/images/home/training-workshop.jpg';
+import learnImage from '../assets/images/media/community-training.webp';
 import tourImage from '../assets/images/home/eco-tour-visitors.jpg';
 
 // Certificates open full-size in a viewer, so make a larger copy of each.
@@ -217,7 +217,7 @@ const certificates = await Promise.all(
       <div class="feature-media">
         <Image
           src={learnImage}
-          alt="Community members take part in a HERI training workshop"
+          alt="A HERI trainer in a lab coat leads a community training session in Kiswahili beside the HERI-Kenya banner"
           widths={[480, 800, 1200]}
           sizes="(max-width: 1023px) 100vw, 50vw"
           class="learn-img"
@@ -498,10 +498,8 @@ const certificates = await Promise.all(
     border-radius: var(--radius-lg);
   }
 
-  /* Wider crop from the top hides the phone watermark in the photo's bottom corner. */
   .feature-media .learn-img {
     aspect-ratio: 16 / 10;
-    object-position: top;
   }
 
   .feature .lead {

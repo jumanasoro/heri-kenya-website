@@ -12,10 +12,14 @@ import beach from '../assets/images/media/activity-20250608.jpg';
 import newspaper from '../assets/images/media/plastic-planet-newspaper.jpg';
 import forum from '../assets/images/home/community-forum.jpg';
 import conference from '../assets/images/home/conference-2022.jpeg';
+import training from '../assets/images/media/community-training.webp';
+import outreach from '../assets/images/media/outreach-stand.webp';
 
 const latest = (await getAllNews()).slice(0, 3);
 
 const gallery = [
+  { src: training, alt: 'A HERI trainer leads a community training session in Kiswahili' },
+  { src: outreach, alt: 'A HERI team member shows visitors products at an outreach stand' },
   { src: beach, alt: 'School pupils take part in a HERI environmental event on the beach in Diani' },
   { src: eggs, alt: 'Students practise collecting Black Soldier Fly eggs at the HERI farm' },
   { src: members, alt: 'HERI-Kenya members gathered in HERI T-shirts' },
@@ -249,7 +253,7 @@ const gallery = [
 
   .gallery {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 16px;
     margin: 0;
     padding: 0;
