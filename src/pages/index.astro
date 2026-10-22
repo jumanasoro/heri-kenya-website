@@ -1,13 +1,13 @@
 ---
 import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import HeroSlider from '../components/HeroSlider.astro';
 import { pillars, pillarHref } from '../data/pillars';
 import { site, stats, audiences, testimonials, partners, donateHref, externalLink } from '../data/site';
 import { awards } from '../data/awards';
 import Form from '../components/Form.astro';
 
-import heroImage from '../assets/images/home/community-forum.jpg';
-import bsfImage from '../assets/images/bsf/bsf-tours-1.jpg';
+import bsfImage from '../assets/images/media/students-egg-harvesting.jpg';
 import learnImage from '../assets/images/home/training-workshop.jpg';
 import tourImage from '../assets/images/home/eco-tour-visitors.jpg';
 
@@ -18,38 +18,8 @@ const certificates = await Promise.all(
 ---
 
 <Base>
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container hero-grid">
-      <div class="hero-copy">
-        <span class="eyebrow">Health + Environmental Research Institute – Kenya</span>
-        <h1>Healthier <span class="accent">Environments and Communities</span></h1>
-        <p class="lead">
-          We connect science with communities and stakeholders, turning research into grassroots action for better
-          health and a sustainable environment.
-        </p>
-        <div class="btn-row">
-          <a class="btn btn--primary" href={donateHref} {...externalLink}>Support our work</a>
-          <a class="btn btn--outline" href="/projects/">See what we do</a>
-        </div>
-      </div>
-
-      <div class="hero-media">
-        <Image
-          src={heroImage}
-          alt="A HERI facilitator leads a community education forum under a large shade tree in Diani"
-          widths={[480, 720, 1100]}
-          sizes="(max-width: 1023px) 100vw, 560px"
-          loading="eager"
-          fetchpriority="high"
-        />
-        <div class="hero-badge">
-          <strong>HERI@5</strong>
-          <span>Five years of science-driven community impact</span>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- Hero slideshow -->
+  <HeroSlider />
 
   <!-- Core pillars -->
   <section class="pillars-band" aria-labelledby="pillars-title">
@@ -198,7 +168,7 @@ const certificates = await Promise.all(
       <div class="feature-media">
         <Image
           src={bsfImage}
-          alt="Visitors inspect trays of Black Soldier Fly larvae and compost at the HERI BSF Farm"
+          alt="Students wearing gloves collect Black Soldier Fly eggs at the HERI BSF Farm"
           widths={[480, 800, 1200]}
           sizes="(max-width: 1023px) 100vw, 50vw"
         />
@@ -336,67 +306,6 @@ const certificates = await Promise.all(
 </Base>
 
 <style>
-  /* Hero */
-  .hero {
-    padding-block: clamp(32px, 4.5vw, 64px) clamp(36px, 5vw, 72px);
-    background:
-      radial-gradient(1200px 500px at 85% 0%, var(--green-50), transparent 70%),
-      var(--white);
-  }
-
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1.05fr 1fr;
-    align-items: center;
-    gap: clamp(32px, 5vw, 72px);
-  }
-
-  .accent {
-    color: var(--brand);
-  }
-
-  .hero-copy .lead {
-    margin-bottom: 32px;
-  }
-
-  .hero-media {
-    position: relative;
-  }
-
-  .hero-media img {
-    width: 100%;
-    aspect-ratio: 4 / 3.6;
-    object-fit: cover;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
-  }
-
-  .hero-badge {
-    position: absolute;
-    left: -24px;
-    bottom: 28px;
-    display: grid;
-    gap: 2px;
-    max-width: 240px;
-    padding: 16px 20px;
-    background: var(--white);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    border-left: 5px solid var(--red-600);
-  }
-
-  .hero-badge strong {
-    font-family: var(--font-heading);
-    font-size: 1.35rem;
-    color: var(--navy-900);
-  }
-
-  .hero-badge span {
-    font-size: 0.9rem;
-    line-height: 1.4;
-    color: var(--text-muted);
-  }
-
   /* Core pillars */
   .pillars-band {
     background: var(--brand);
@@ -940,7 +849,6 @@ const certificates = await Promise.all(
 
   /* Responsive */
   @media (max-width: 1023px) {
-    .hero-grid,
     .feature-grid {
       grid-template-columns: 1fr;
     }
@@ -949,10 +857,6 @@ const certificates = await Promise.all(
       order: 2;
     }
 
-    .hero-badge {
-      left: 16px;
-      bottom: 16px;
-    }
 
     .paths,
     .quotes,
@@ -991,24 +895,6 @@ const certificates = await Promise.all(
       padding: 24px;
     }
 
-    .hero-media img {
-      aspect-ratio: 4 / 3;
-    }
-
-    .hero-badge {
-      left: 12px;
-      bottom: 12px;
-      max-width: 200px;
-      padding: 10px 14px;
-    }
-
-    .hero-badge strong {
-      font-size: 1.1rem;
-    }
-
-    .hero-badge span {
-      font-size: 0.8rem;
-    }
 
     .logos {
       gap: 20px 32px;
