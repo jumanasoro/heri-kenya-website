@@ -1,5 +1,5 @@
 ---
-title: 'Save the date: HERI@5 Annual Fundraising Gala, 12 December'
+title: 'Save the date: HERI@6 Annual Fundraising Gala, 12 December'
 date: 2026-10-22
 summary: 'Join us on Saturday, 12 December 2026 to celebrate five years of HERI-Kenya and help raise funds for the next five.'
 category: Event

@@ -23,7 +23,7 @@ export type Gala = {
 };
 
 export const gala: Gala = {
-  title: 'HERI@5 Annual Fundraising Gala',
+  title: 'HERI@6 Annual Fundraising Gala',
   tagline: 'Celebrating five years of healthier environments and communities',
   date: '2026-12-12',
   dateLabel: 'Saturday, 12 December 2026',
