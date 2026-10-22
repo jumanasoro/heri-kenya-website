@@ -63,7 +63,7 @@ export const pillars: Pillar[] = [
     projects: ['heri-school-eco-clubs', 'heri-community-forums', 'heri-eco-action', 'heri-hub-capacity-building'],
     related: [
       { label: 'HERI Learning', href: '/learn/', text: 'Online courses with certificates — launching soon.' },
-      { label: 'Learning & eco-tours', href: '/learning-eco-tours/', text: 'Hands-on learning at the BSF Farm.' },
+      { label: 'Learning & Eco-Tours', href: '/learning-eco-tours/', text: 'Hands-on learning at the BSF Farm.' },
     ],
   },
   {
