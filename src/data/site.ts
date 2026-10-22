@@ -76,10 +76,10 @@ export const audiences: Audience[] = [
   {
     key: 'partners',
     title: 'For partners',
-    intro: 'Hotels, businesses, researchers and government working together.',
+    intro: 'Hotels, businesses, universities, researchers and government working together.',
     points: [
       'Tailored CSR packages',
-      'Research collaborations and field studies',
+      'Research collaborations and field studies with universities',
       'Organic waste collection for hotels',
     ],
     cta: { label: 'Partner with us', href: '/partnerships-csr/' },
