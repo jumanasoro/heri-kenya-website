@@ -3,7 +3,7 @@
 // and the tour page will offer a "look around" view for it.
 import type { ImageMetadata } from 'astro';
 
-import shelter from '../assets/images/bsf/bsf-tour-3.jpg';
+import farmHouse from '../assets/images/bsf/bsf-farm-larvae-house.jpg';
 import hotelWaste from '../assets/images/home/hotel-partners-organic-waste.jpg';
 import larvaeBed from '../assets/images/bsf/bsf-tours-2.jpg';
 import larvaeTrays from '../assets/images/bsf/bsf-tours-1.jpg';
@@ -31,12 +31,11 @@ export const tourStops: TourStop[] = [
     id: 'welcome',
     label: 'Welcome',
     title: 'Welcome to the HERI BSF Farm',
-    image: shelter,
-    imageAlt: 'The shaded learning shelter where tours begin at the HERI BSF Farm',
-    imageSmall: true,
+    image: farmHouse,
+    imageAlt: 'The screened larvae house at the HERI BSF Farm in Diani',
     paragraphs: [
       'You are in Diani, one of Kenya’s busiest tourism and hospitality hubs. All those hotels, restaurants, markets and homes produce a lot of food waste — and most of it has nowhere good to go.',
-      'This farm is HERI’s answer: a working demonstration site, training hub and community resource centre where organic waste is turned into useful products. Tours start here, at the learning shelter.',
+      'This farm is HERI’s answer: a working demonstration site, training hub and community resource centre where organic waste is turned into useful products. Let’s step inside.',
     ],
     facts: ['Live demonstration site', 'Training hub for youth and women', 'Open to visitors on weekdays and Saturdays'],
   },

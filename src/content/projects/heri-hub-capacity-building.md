@@ -4,6 +4,8 @@ summary: A year-long public art installation in the centre of Diani that made ma
 order: 8
 category: Awareness
 status: completed
+cover: ../../assets/images/media/sea-change-sculpture.jpg
+coverAlt: HERI-Kenya team members stand in front of the Sea Change plastic wave sculpture and its plaque in Diani
 highlights:
   - title: Earth Day 2023 – Earth Day 2024
     text: On display for a full year in a high-visibility public space in central Diani.

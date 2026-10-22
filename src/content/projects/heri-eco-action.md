@@ -3,6 +3,8 @@ title: HERI Eco-Action
 summary: Tree planting and coastal clean-ups that restore habitats, cut pollution and unite communities, schools and volunteers in collective climate action.
 order: 7
 category: Community
+cover: ../../assets/images/media/mangrove-planting.jpg
+coverAlt: HERI-Kenya team members and volunteers plant mangrove seedlings in the coastal mud
 highlights:
   - title: 15,000 trees planted
     text: Restoring habitats and greening schools and public spaces across Diani.

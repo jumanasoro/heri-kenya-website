@@ -2,7 +2,7 @@
 // DRAFT TEXT: `summary`, `intro` and `focus` are placeholders — replace them with HERI's own wording.
 import type { ImageMetadata } from 'astro';
 
-import bsfWasteToResource from '../assets/images/bsf/bsf-tours-1.jpg';
+import bsfWasteToResource from '../assets/images/bsf/larvae-and-compost-in-hand.jpg';
 import beachEvent from '../assets/images/media/activity-20250608.jpg';
 import members from '../assets/images/media/heri-members.jpg';
 import lab from '../assets/images/home/research.png';
@@ -26,7 +26,7 @@ export const pillars: Pillar[] = [
     slug: 'circular-economy',
     title: 'Waste to Health',
     image: bsfWasteToResource,
-    imageAlt: 'Trays of Black Soldier Fly larvae and the compost they make from food waste at the HERI BSF Farm',
+    imageAlt: 'Hands hold Black Soldier Fly larvae and compost over a larvae bed at the HERI BSF Farm',
     summary: 'Turning organic waste into compost and protein-rich animal feed through our Black Soldier Fly Farm.',
     intro:
       'Organic waste is the largest share of solid waste in Kenya’s growing towns. We treat it as a resource: our Black Soldier Fly Farm turns food waste from hotels, markets and homes into animal feed and organic fertiliser, and we help businesses and communities adopt the same model.',
