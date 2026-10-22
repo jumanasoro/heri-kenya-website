@@ -1,7 +1,7 @@
-// The HERI@5 fundraising gala. Leave a field as null until it is confirmed:
+// The HERI@6 fundraising gala. Leave a field as null until it is confirmed:
 // the website then shows "To be announced" instead of guessing.
 import type { ImageMetadata } from 'astro';
-import galaImage from '../assets/images/home/conference-2022.jpeg';
+import galaImage from '../assets/images/media/research-team-microscope.webp';
 
 export type Gala = {
   title: string;
@@ -24,7 +24,7 @@ export type Gala = {
 
 export const gala: Gala = {
   title: 'HERI@6 Annual Fundraising Gala',
-  tagline: 'Celebrating five years of healthier environments and communities',
+  tagline: 'Celebrating six years of healthier environments and communities',
   date: '2026-12-12',
   dateLabel: 'Saturday, 12 December 2026',
   time: null, // TODO: start time
@@ -33,7 +33,7 @@ export const gala: Gala = {
   tickets: null, // TODO: ticket prices
   ticketLink: null,
   intro:
-    'Join HERI-Kenya, our partners and supporters for an evening celebrating five years of science-driven community impact on Kenya’s coast — and help us raise the funds to scale our work for the next five.',
+    'Join HERI-Kenya, our partners and supporters for an evening celebrating six years of science-driven community impact on Kenya’s coast — and help us raise the funds to scale our work in the years ahead.',
   supports: [
     'Expanding the Black Soldier Fly Farm’s waste processing capacity',
     'Building a sustainability training and research hub',
@@ -42,7 +42,7 @@ export const gala: Gala = {
   ],
   programme: null, // TODO: evening programme
   image: galaImage,
-  imageAlt: 'HERI-Kenya members, partners and guests gathered at a past HERI event',
+  imageAlt: 'HERI-Kenya researchers and students examine samples under a microscope',
   showUntil: '2026-12-13',
 };
 
