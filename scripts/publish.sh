@@ -33,6 +33,9 @@ work="$(mktemp -d)"
 trap 'git worktree remove --force "$work" >/dev/null 2>&1 || true; rm -rf "$work"' EXIT
 
 # Each publish is a fresh single-commit branch, so old zips don't pile up on GitHub.
+# Clear leftovers from an interrupted publish first.
+git worktree prune
+git branch -q -D "$branch-tmp" 2>/dev/null || true
 git worktree add --force --orphan -b "$branch-tmp" "$work" >/dev/null
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(cygpath -w "$root/scripts/zip-dist.ps1")" \
   -Out "$(cygpath -w "$work/site.zip")"
