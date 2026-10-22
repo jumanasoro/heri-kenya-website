@@ -131,11 +131,10 @@ a {
 .eyebrow {
   display: inline-block;
   font-family: var(--font-heading);
-  font-size: 0.8125rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--brand);
+  letter-spacing: 0.02em;
+    color: var(--brand);
   margin-bottom: 0.75rem;
 }
 
