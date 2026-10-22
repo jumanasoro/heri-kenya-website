@@ -29,6 +29,7 @@ export const nav: NavItem[] = [
   { label: 'Learn', href: '/learn/' },
   { label: 'Research', href: '/research/' },
   { label: 'About', href: '/about-us/' },
+  { label: 'News', href: '/news/' },
   { label: 'Get Involved', href: '/contact-us/' },
 ];
 
@@ -77,7 +78,7 @@ export const audiences: Audience[] = [
     title: 'For partners',
     intro: 'Hotels, businesses, researchers and government working together.',
     points: [
-      'Tailored CSR packages for Diani businesses',
+      'Tailored CSR packages',
       'Research collaborations and field studies',
       'Organic waste collection for hotels',
     ],

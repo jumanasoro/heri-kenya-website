@@ -1,0 +1,134 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import { getAllNews } from '../../lib/news';
+
+const items = await getAllNews();
+const [latest, ...rest] = items;
+const categories = ['All', ...new Set(items.map((i) => i.category))];
+---
+
+<Base
+  title="News & Updates"
+  description="The latest news, events, awards and updates from HERI-Kenya’s work on health, environment and communities in Diani and the Kenyan coast."
+>
+  <PageHero
+    eyebrow="News & updates"
+    title="What’s happening at HERI"
+    lead="Events, awards, project updates and stories from our work with communities, schools and partners on Kenya’s coast."
+    crumbs={[{ label: 'News', href: '/news/' }]}
+  />
+
+  <section class="section">
+    <div class="container">
+      {
+        items.length === 0 ? (
+          <p class="empty">News is on its way — check back soon.</p>
+        ) : (
+          <>
+            <div class="filters" role="group" aria-label="Filter news by category" data-filters>
+              {categories.map((c, i) => (
+                <button type="button" class="filter" data-filter={c} aria-pressed={i === 0 ? 'true' : 'false'}>
+                  {c}
+                </button>
+              ))}
+            </div>
+
+            <div class="featured" data-item data-category={latest.category}>
+              <NewsCard item={latest} featured />
+            </div>
+
+            {rest.length > 0 && (
+              <ul class="grid">
+                {rest.map((item) => (
+                  <li data-item data-category={item.category}>
+                    <NewsCard item={item} />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
+        )
+      }
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Category filter buttons (all stories stay in the page for search engines and no-JS visitors).
+  const group = document.querySelector('[data-filters]');
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+  const items = [...document.querySelectorAll<HTMLElement>('[data-item]')];
+  group?.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-filter]');
+    if (!btn) return;
+    const value = btn.dataset.filter;
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+    items.forEach((el) => {
+      el.hidden = value !== 'All' && el.dataset.category !== value;
+    });
+  });
+</script>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .filter {
+    min-height: 40px;
+    padding: 6px 16px;
+    border: 1.5px solid var(--slate-200);
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--text);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .filter[aria-pressed='true'] {
+    border-color: var(--brand);
+    background: var(--brand);
+    color: var(--white);
+  }
+
+  .featured {
+    margin-bottom: 24px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  .empty {
+    padding: 24px;
+    border-radius: var(--radius);
+    background: var(--surface-soft);
+  }
+
+  @media (max-width: 1023px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

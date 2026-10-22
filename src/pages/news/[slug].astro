@@ -1,0 +1,231 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { getNewsEntries, getAllNews, formatDate, newsHref } from '../../lib/news';
+
+export const getStaticPaths = (async () => {
+  const entries = await getNewsEntries();
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, date, summary, category, cover, coverAlt } = entry.data;
+
+const pageUrl = new URL(newsHref(entry.id), Astro.site).href;
+const share = [
+  { label: 'WhatsApp', href: `https://wa.me/?text=${encodeURIComponent(`${title} ${pageUrl}`)}` },
+  { label: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}` },
+  { label: 'LinkedIn', href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}` },
+  {
+    label: 'X',
+    href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(pageUrl)}`,
+  },
+];
+
+const more = (await getAllNews()).filter((n) => n.href !== newsHref(entry.id)).slice(0, 3);
+---
+
+<Base title={title} description={summary}>
+  <article>
+    <header class="head">
+      <div class="container narrow">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="/">Home</a> / <a href="/news/">News</a>
+        </nav>
+        <p class="meta">
+          <span class:list={['tag', `tag--${category.toLowerCase()}`]}>{category}</span>
+          <time datetime={date.toISOString().slice(0, 10)}>{formatDate(date)}</time>
+        </p>
+        <h1>{title}</h1>
+        <p class="lead">{summary}</p>
+      </div>
+    </header>
+
+    {
+      cover && (
+        <div class="container narrow">
+          <Image src={cover} alt={coverAlt ?? ''} widths={[640, 960, 1400]} sizes="(max-width: 860px) 100vw, 820px" class="cover" />
+        </div>
+      )
+    }
+
+    <div class="container narrow body">
+      <div class="prose">
+        <Content />
+      </div>
+
+      <aside class="share" aria-label="Share this story">
+        <span>Share:</span>
+        {
+          share.map((s) => (
+            <a href={s.href} target="_blank" rel="noopener">
+              {s.label}
+            </a>
+          ))
+        }
+      </aside>
+    </div>
+  </article>
+
+  {
+    more.length > 0 && (
+      <section class="section section--soft">
+        <div class="container">
+          <div class="more-head">
+            <h2>More news</h2>
+            <a class="link-arrow" href="/news/">
+              All news
+            </a>
+          </div>
+          <ul class="grid">
+            {more.map((item) => (
+              <li>
+                <NewsCard item={item} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <CtaBand />
+</Base>
+
+<style>
+  .narrow {
+    max-width: 860px;
+  }
+
+  .head {
+    padding-block: clamp(32px, 4.5vw, 56px) 24px;
+  }
+
+  .crumbs {
+    margin-bottom: 18px;
+    font-size: 0.9rem;
+    color: var(--slate-500);
+  }
+
+  .crumbs a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    text-decoration: underline;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    color: var(--slate-500);
+  }
+
+  .tag {
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--green-50);
+    color: var(--brand-strong);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .tag--award {
+    background: #fef3c7;
+    color: #92400e;
+  }
+
+  .tag--event {
+    background: #e0f2fe;
+    color: #075985;
+  }
+
+  h1 {
+    font-size: clamp(1.9rem, 4vw, 3rem);
+  }
+
+  .cover {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+
+  .body {
+    padding-block: clamp(28px, 4vw, 48px) var(--section);
+  }
+
+  .share {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .share span {
+    font-weight: 700;
+    margin-right: 4px;
+  }
+
+  .share a {
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--green-50);
+    color: var(--brand-strong);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .share a:hover {
+    background: var(--green-100);
+  }
+
+  .more-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .more-head h2 {
+    margin: 0;
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 1023px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

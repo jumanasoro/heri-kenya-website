@@ -2,6 +2,7 @@
 import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import HeroSlider from '../components/HeroSlider.astro';
+import GalaFeature from '../components/GalaFeature.astro';
 import { pillars, pillarHref } from '../data/pillars';
 import { site, stats, audiences, testimonials, partners, donateHref, externalLink } from '../data/site';
 import { awards } from '../data/awards';
@@ -20,6 +21,9 @@ const certificates = await Promise.all(
 <Base>
   <!-- Hero slideshow -->
   <HeroSlider />
+
+  <!-- Upcoming gala (hides itself after the event) -->
+  <GalaFeature />
 
   <!-- Core pillars -->
   <section class="pillars-band" aria-labelledby="pillars-title">

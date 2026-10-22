@@ -15,6 +15,7 @@ const FORMS = [
     'partnership' => ['subject' => 'Partnership enquiry', 'fields' => ['name', 'email', 'phone', 'organisation', 'interest', 'message']],
     'learn-interest' => ['subject' => 'Learning platform sign-up', 'fields' => ['name', 'email', 'topics', 'language']],
     'newsletter' => ['subject' => 'Newsletter sign-up', 'fields' => ['name', 'email']],
+    'gala-rsvp' => ['subject' => 'Gala RSVP', 'fields' => ['name', 'email', 'phone', 'organisation', 'interest', 'seats', 'message']],
 ];
 
 $wantsJson = str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json');

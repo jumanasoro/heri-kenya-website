@@ -21,4 +21,21 @@ const projects = defineCollection({
     }),
 });
 
-export const collections = { projects };
+// One Markdown file per story in src/content/news/. The file name is the URL:
+// heri-wins-award.md -> /news/heri-wins-award/
+const news = defineCollection({
+  loader: glob({ base: './src/content/news', pattern: '*.md' }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      date: z.coerce.date(),
+      summary: z.string(),
+      category: z.enum(['News', 'Event', 'Award', 'Update']),
+      cover: image().optional(),
+      coverAlt: z.string().optional(),
+      // Drafts are kept out of the website until set to false.
+      draft: z.boolean().default(false),
+    }),
+});
+
+export const collections = { projects, news };

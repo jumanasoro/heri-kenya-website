@@ -1,0 +1,220 @@
+---
+// Homepage feature advertising the gala; hidden automatically after the event.
+import { Image } from 'astro:assets';
+import { gala, galaHref } from '../data/events';
+import { donateHref, externalLink } from '../data/site';
+
+const visible = new Date() < new Date(gala.showUntil);
+const date = new Date(gala.date);
+const day = date.getUTCDate();
+const month = date.toLocaleString('en-GB', { month: 'short', timeZone: 'UTC' });
+const year = date.getUTCFullYear();
+---
+
+{
+  visible && (
+    <section class="section gala-section" aria-labelledby="gala-title" data-gala data-until={gala.showUntil}>
+      <div class="container">
+        <div class="gala">
+          <div class="gala-media">
+            <Image src={gala.image} alt={gala.imageAlt} widths={[480, 800]} sizes="(max-width: 1023px) 100vw, 480px" />
+            <div class="date-block" aria-hidden="true">
+              <span class="d">{day}</span>
+              <span class="m">{month}</span>
+              <span class="y">{year}</span>
+            </div>
+          </div>
+          <div class="gala-copy">
+            <span class="eyebrow">Save the date · Annual fundraising gala</span>
+            <h2 id="gala-title">{gala.title}</h2>
+            <p class="tagline">{gala.tagline}</p>
+            <p class="countdown" data-countdown={gala.date} hidden />
+            <dl class="facts">
+              <div>
+                <dt>Date</dt>
+                <dd>{gala.dateLabel}</dd>
+              </div>
+              <div>
+                <dt>Time</dt>
+                <dd>{gala.time ?? 'To be announced'}</dd>
+              </div>
+              <div>
+                <dt>Venue</dt>
+                <dd>{gala.venue ?? 'To be announced'}</dd>
+              </div>
+            </dl>
+            <div class="btn-row">
+              <a class="btn btn--primary" href={`${galaHref}#rsvp`}>
+                Reserve your seat
+              </a>
+              <a class="btn btn--ghost-light" href={galaHref}>
+                Gala details
+              </a>
+              <a class="link-light" href={donateHref} {...externalLink}>
+                Can’t attend? Donate →
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<script>
+  // Show "N days to go" and hide the feature once the gala has passed.
+  document.querySelectorAll<HTMLElement>('[data-gala]').forEach((el) => {
+    const until = el.dataset.until;
+    if (until && new Date() >= new Date(until)) {
+      el.remove();
+      return;
+    }
+    const counter = el.querySelector<HTMLElement>('[data-countdown]');
+    const target = counter?.dataset.countdown;
+    if (!counter || !target) return;
+    const days = Math.ceil((new Date(`${target}T00:00:00+03:00`).getTime() - Date.now()) / 86_400_000);
+    counter.textContent = days > 1 ? `${days} days to go` : days === 1 ? 'Tomorrow!' : 'Tonight!';
+    counter.hidden = false;
+  });
+</script>
+
+<style>
+  .gala {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(600px 300px at 100% 0%, rgb(250 204 21 / 0.18), transparent 70%),
+      var(--navy-900);
+    color: var(--white);
+  }
+
+  .gala-media {
+    position: relative;
+    min-height: 280px;
+  }
+
+  .gala-media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .date-block {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    display: grid;
+    justify-items: center;
+    min-width: 92px;
+    padding: 12px 14px;
+    border-radius: var(--radius);
+    background: var(--sun-400);
+    color: var(--navy-900);
+    font-family: var(--font-heading);
+    line-height: 1;
+    box-shadow: var(--shadow);
+  }
+
+  .d {
+    font-size: 2.6rem;
+    font-weight: 800;
+  }
+
+  .m {
+    margin-top: 4px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .y {
+    margin-top: 2px;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .gala-copy {
+    padding: clamp(28px, 4vw, 48px);
+  }
+
+  .eyebrow {
+    color: var(--sun-400);
+  }
+
+  h2 {
+    margin-bottom: 8px;
+    color: var(--white);
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+  }
+
+  .tagline {
+    color: rgb(255 255 255 / 0.82);
+    font-size: 1.1rem;
+  }
+
+  .countdown {
+    display: inline-block;
+    margin: 0 0 20px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgb(250 204 21 / 0.16);
+    color: var(--sun-400);
+    font-weight: 700;
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: start;
+    gap: 12px 32px;
+    margin: 0 0 28px;
+  }
+
+  dt {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 0.6);
+  }
+
+  dd {
+    margin: 2px 0 0;
+    font-weight: 600;
+  }
+
+  .btn-row {
+    align-items: center;
+  }
+
+  .link-light {
+    color: rgb(255 255 255 / 0.85);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .link-light:hover {
+    color: var(--white);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 1023px) {
+    .gala {
+      grid-template-columns: 1fr;
+    }
+
+    .gala-media {
+      min-height: 220px;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .facts {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

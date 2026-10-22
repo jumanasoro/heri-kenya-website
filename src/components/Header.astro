@@ -41,6 +41,9 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
 
   toggle?.addEventListener('click', () => {
     const open = toggle.getAttribute('aria-expanded') !== 'true';
+    // Start the menu panel right under the header, wherever it is (e.g. below the gala banner).
+    const nav = document.querySelector<HTMLElement>('[data-nav]');
+    if (open && header && nav) nav.style.top = `${header.getBoundingClientRect().bottom}px`;
     toggle.setAttribute('aria-expanded', String(open));
     header?.classList.toggle('is-open', open);
     document.body.style.overflow = open ? 'hidden' : '';

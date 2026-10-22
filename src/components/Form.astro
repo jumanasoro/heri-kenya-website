@@ -9,7 +9,7 @@ export type Field =
   | { name: string; label: string; type: 'checkboxes'; options: string[] };
 
 interface Props {
-  form: 'contact' | 'get-involved' | 'partnership' | 'learn-interest' | 'newsletter';
+  form: 'contact' | 'get-involved' | 'partnership' | 'learn-interest' | 'newsletter' | 'gala-rsvp';
   fields: Field[];
   submitLabel?: string;
   // First sentence of the note under the button.
