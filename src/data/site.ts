@@ -34,7 +34,7 @@ export const nav: NavItem[] = [
 ];
 
 // Donate buttons go straight to HERI's Social Good Fund campaign (opened in a new tab).
-export const donateHref = 'https://give.socialgoodfund.org/52imR8?ref=ab_5sjm4pVIUtX5sjm4pVIUtX';
+export const donateHref = 'https://give.socialgoodfund.org/52imR8';
 // The Support Us page lists every way to give, including M-Pesa and bank transfer.
 export const supportHref = '/support/';
 // Spread onto links that leave the site: <a href={donateHref} {...externalLink}>.
