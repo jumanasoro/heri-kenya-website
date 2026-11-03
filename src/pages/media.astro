@@ -63,6 +63,35 @@ const gallery = [
     </div>
   </section>
 
+  <section class="section" id="profile" aria-labelledby="profile-title">
+    <div class="container">
+      <div class="section-head split">
+        <div>
+          <span class="eyebrow">Publications &amp; downloads</span>
+          <h2 id="profile-title">HERI-Kenya Profile 2026</h2>
+          <p class="lead">
+            Our story, 2026 awards and milestones, our work in Diani, and how to partner, volunteer or join our 6th
+            Annual Gala on 12 December. Read it here or download the PDF to share.
+          </p>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="/downloads/heri-kenya-profile-2026.pdf" download>Download the profile (PDF, 3.6 MB)</a>
+          <a class="btn btn--outline" href="/downloads/heri-kenya-profile-2026.pdf" target="_blank" rel="noopener">Open in a new tab</a>
+        </div>
+      </div>
+      <div class="doc-viewer">
+        <iframe
+          src="/downloads/heri-kenya-profile-2026.pdf#view=FitH"
+          title="HERI-Kenya Profile 2026 (PDF)"
+          loading="lazy"
+        ></iframe>
+        <p class="doc-fallback">
+          If the profile does not show here, <a href="/downloads/heri-kenya-profile-2026.pdf">open or download the PDF</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <section class="section section--soft" aria-labelledby="story-title">
     <div class="container story">
       <div>
@@ -248,6 +277,35 @@ const gallery = [
   .guest p {
     color: var(--text-muted);
     margin: 4px 0 8px;
+  }
+
+  .doc-viewer {
+    margin-top: 8px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--surface-soft);
+  }
+
+  .doc-viewer iframe {
+    display: block;
+    width: 100%;
+    height: min(90vh, 1100px);
+    border: 0;
+  }
+
+  .doc-fallback {
+    margin: 0;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 639px) {
+    .doc-viewer iframe {
+      height: 70vh;
+    }
   }
 
   .gallery {
